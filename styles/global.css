@@ -1,0 +1,115 @@
+img#footerImg {
+  border: 1px black solid;
+  width: 70%;
+
+  position: absolute;
+  top: 100%;
+  left: 15%;
+}
+h1 {
+  text-align: center;
+}
+#topmenu {
+  width: 100%;
+  display: table;
+  background-color: white;
+}
+#topmenu :hover {
+  height: 2ex;
+}
+#topmenu div {
+  width: 33%;
+  border: 2px black solid;
+  display: table-cell;
+  text-align: center;
+  z-index: 0;
+  position: relative;
+}
+#topmenu div:hover {
+  position: relative;
+  left: 0;
+
+  z-index: 2;
+  /* width: 100%; */
+
+  transition-duration: 5s;
+}
+
+body {
+  font-family: cursive, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  background-color: rgb(53, 59, 59);
+  background-image: url("/c.png");
+}
+#tg1 {
+  float: left;
+  position: relative;
+  width: 35%;
+}
+#tg2 {
+  float: left;
+  position: relative;
+  width: 29.9%;
+  font-size: 20px;
+  text-align: center;
+  background-color: white;
+}
+#tg3 {
+  float: left;
+  position: relative;
+  width: 35%;
+}
+.titleImg {
+  width: 40px;
+  height: 40px;
+}
+aside {
+  border-radius: 15%;
+  border: 2px black solid;
+  background-color: white;
+}
+@keyframes textColorAnim {
+  0% {
+    color: black;
+  }
+  25% {
+    color: red;
+  }
+  50% {
+    color: black;
+  }
+  75% {
+    color: red;
+  }
+  100% {
+    color: black;
+  }
+}
+details p {
+  animation: textColorAnim 5s infinite;
+  font-size: 13px;
+}
+a {
+  color: rgb(90, 201, 205);
+}
+span#hiddenword {
+  color: white;
+  animation: textSizeAnim 3s infinite;
+}
+@keyframes textSizeAnim {
+  0% {
+    font-size: 14px;
+  }
+  25% {
+    font-size: 18px;
+  }
+  50% {
+    font-size: 14px;
+  }
+  75% {
+    font-size: 18px;
+  }
+  100% {
+    font-size: 14px;
+  }
+}
