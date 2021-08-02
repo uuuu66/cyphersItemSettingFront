@@ -1,23 +1,20 @@
 
-import {useState} from "react"
-
+import {useState} from "react";
+import Link from "next/link";
 export default function Menu(){
     const [select,setMenuSelection]=useState(0);
     const menuText=[
-        {index:1,menu:"새 아이템 세트 만들기"},
-        {index:2,menu:"아이템 코드 불러오기"},
-        {index:3,menu:"다른 사람이 만든 코드 보기"}
+        {index:1,menu:"아이템 세트 만들기/불러오기",href:"/make"},
+        {index:2,menu:"아이템 검색하기",href:"/load"}
     ]
-    const openMenu=(e)=>{
-        const {key}=e.target;
-        setMenuSelection(key);
-    }
- 
+
     return (
         <nav>
+            
            {menuText.map((menu)=>(
-            <div className="menuText" key={menu.index} onClick={openMenu}>{menu.menu}</div>
+                    <Link key={menu.index} href={menu.href}><div className="menuText"  >{menu.menu}</div></Link>
            ))}
+           
         </nav>
     )
 }

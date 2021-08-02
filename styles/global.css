@@ -1,3 +1,7 @@
+div {
+  max-width: 450px;
+  word-break: break-all;
+}
 img#footerImg {
   border: 1px black solid;
   width: 100%;
@@ -33,6 +37,11 @@ h1 {
   max-width: 450px;
 }
 body {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,15 +108,28 @@ span#hiddenword {
     font-size: 14px;
   }
 }
-ul#help li {
-  cursor: pointer;
+div#characterTable {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
+}
+div#characteritems {
+  text-align: center;
+}
+div#subtitle {
+  color: white;
+  background-color: black;
+  width: 100%;
+}
+div.charImg {
+  width: 45px;
+  height: 45px;
+  margin: 2px;
+  border: 2px black solid;
 }
 div#menuBtn {
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
   width: 30px;
   height: 30px;
   position: fixed;
@@ -140,11 +162,6 @@ nav {
   color: white;
 }
 .menuText {
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
   cursor: pointer;
 }
 .menuText:hover {

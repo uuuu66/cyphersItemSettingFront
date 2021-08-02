@@ -1,4 +1,4 @@
-import {ReactNode,useState,useRef} from "react";
+import {ReactNode,useState} from "react";
 import Menu from './menu';
 
 
@@ -24,8 +24,7 @@ export default function layout({children}:{children:ReactNode}){
             {!menuState.index?null:<Menu></Menu>}
             <article>
                 {children}
-            </article>
-            
+            </article>       
         </section>
     )
 }
