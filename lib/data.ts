@@ -18,6 +18,16 @@ const  getCharList=async()=>{
 }
 const getItemList=async(character:string)=>{
    const res:AxiosResponse<any>=await axios.post('http://127.0.0.1:3000/api/getItemList',{character:character});
+   let data=res.data.data;
+   const code=res.data.code;
+   let result=null;
+   if(code!=="error"){
+      result=data.split(',');
+   }else{
+      result=res.data;
+   }
+   return result;
+
 }
 
 export {getCharList,getItemList};

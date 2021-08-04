@@ -3,13 +3,28 @@ import fs from 'fs';
 import path from 'path';
 const dataPath=path.join(process.cwd(),'lib/datas/');
 
-export default async(req: NextApiRequest, res: NextApiResponse) => {
+
+export default async function hander(req: NextApiRequest, res: NextApiResponse)  {
   // ...
     if(req.method="post"){
         const itemPath=path.join(dataPath,req.body.character+".txt");
-        const ItemList= await fs.promises.readFile(itemPath);
-        res.status(200).json({data:ItemList});
+        await fs.readFile(itemPath,(err,data)=>{
+            if(!err){
+            return  res.json({code:"data",data:data.toString()});
+            }else{
+            return res.json({code:"error",data:err.code});
+            }
+        });
+        
     }else{
-        res.status(404);
+        return  res.json({code:"error",data:"no signal"});
     }
+   
 }
+
+// export const config = {
+//     api: {
+//       bodyParser: false
+//     }
+//   };
+  

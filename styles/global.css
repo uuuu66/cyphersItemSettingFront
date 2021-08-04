@@ -3,14 +3,13 @@ div {
   word-break: break-all;
 }
 img#footerImg {
-  border: 1px black solid;
   width: 100%;
   position: relative;
   bottom: 0%;
+  border: solid black 2px;
 }
 footer {
   width: 100%;
-  border: solid black 2px;
 }
 
 header {
@@ -167,4 +166,31 @@ nav {
 .menuText:hover {
   background-color: blue;
   color: white;
+}
+.item {
+  width: 100px;
+  height: 30px;
+  font-size: 8px;
+  border: 1px black solid;
+  background-color: gray;
+
+  vertical-align: center;
+}
+.item img {
+  width: 30px;
+  height: 30px;
+}
+#characterSet {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.itemList {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
 }
