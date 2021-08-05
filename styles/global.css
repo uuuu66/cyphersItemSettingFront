@@ -173,12 +173,20 @@ nav {
   font-size: 8px;
   border: 1px black solid;
   background-color: gray;
-
-  vertical-align: center;
+  display: flex;
 }
-.item img {
+.item div.itemImg {
   width: 30px;
   height: 30px;
+}
+.item div.itemImg img {
+  width: 30px;
+  height: 30px;
+}
+.item div.itemName {
+  width: 70px;
+  height: 30px;
+  line-height: 30px;
 }
 #characterSet {
   display: flex;

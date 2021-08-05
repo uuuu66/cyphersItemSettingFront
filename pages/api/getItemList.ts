@@ -7,10 +7,11 @@ const dataPath=path.join(process.cwd(),'lib/datas/');
 export default async function hander(req: NextApiRequest, res: NextApiResponse)  {
   // ...
     if(req.method="post"){
-        const itemPath=path.join(dataPath,req.body.character+".txt");
+        const itemPath=path.join(dataPath,req.body.character+".json");
         await fs.readFile(itemPath,(err,data)=>{
             if(!err){
-            return  res.json({code:"data",data:data.toString()});
+                console.log(JSON.parse(data.toString()));
+            //return  res.json({code:"data",data:data.toString()});
             }else{
             return res.json({code:"error",data:err.code});
             }

@@ -17,7 +17,7 @@ const  getCharList=async()=>{
     return result
 }
 const getItemList=async(character:string)=>{
-   const res:AxiosResponse<any>=await axios.post('http://127.0.0.1:3000/api/getItemList',{character:character});
+   const res:AxiosResponse<any>=await axios.post('/api/getItemList',{character:character});
    let data=res.data.data;
    const code=res.data.code;
    let result=null;
@@ -29,5 +29,9 @@ const getItemList=async(character:string)=>{
    return result;
 
 }
+const getItemInfo=async(code:string)=>{
+   const res:AxiosResponse<any>=await axios.post('/api/getItemInfo',{code:code});
+   console.log(res.data);
+}
 
-export {getCharList,getItemList};
+export {getCharList,getItemList,getItemInfo};
