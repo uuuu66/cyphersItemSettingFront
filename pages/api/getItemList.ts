@@ -1,22 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import fs from 'fs';
-import path from 'path';
-const dataPath=path.join(process.cwd(),'lib/datas/');
+import itemJson from '../../lib/datas/item.json'
+
+
 
 
 export default async function hander(req: NextApiRequest, res: NextApiResponse)  {
   // ...
     if(req.method="post"){
-        const itemPath=path.join(dataPath,req.body.character+".json");
-        await fs.readFile(itemPath,(err,data)=>{
-            if(!err){
-                console.log(JSON.parse(data.toString()));
-            //return  res.json({code:"data",data:data.toString()});
-            }else{
-            return res.json({code:"error",data:err.code});
-            }
-        });
-        
+        const result=[];
+        result.push(itemJson[req.body.character]);
+        result.push(itemJson["null"]);
+        return res.json({code:"done",data:result});
     }else{
         return  res.json({code:"error",data:"no signal"});
     }

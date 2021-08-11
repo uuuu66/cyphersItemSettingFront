@@ -10,28 +10,31 @@ const  getCharList=async()=>{
  datas.map(character=>{
     character.characterId=imgsrc+character.characterId;
  })   
-
-
  const result=datas;
 
     return result
 }
 const getItemList=async(character:string)=>{
-   const res:AxiosResponse<any>=await axios.post('/api/getItemList',{character:character});
-   let data=res.data.data;
-   const code=res.data.code;
-   let result=null;
-   if(code!=="error"){
-      result=data.split(',');
-   }else{
-      result=res.data;
+   try{
+      
+      const res:AxiosResponse<any>=await axios.post('/api/getItemList',{character:character});
+      const data=res.data.data;
+      const code=res.data.code;
+      let result={};
+      if(code!=="error"){
+         const charData=data[0];
+         const commonData=data[1];
+     
+         result[character]=charData;
+         result["공통"]=commonData;
+      }else{
+         result=res.data;
+      }
+      return result;
+   }catch(err){
+      console.log(err);
+      return;
    }
-   return result;
-
-}
-const getItemInfo=async(code:string)=>{
-   const res:AxiosResponse<any>=await axios.post('/api/getItemInfo',{code:code});
-   console.log(res.data);
 }
 
-export {getCharList,getItemList,getItemInfo};
+export {getCharList,getItemList};

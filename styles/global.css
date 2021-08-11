@@ -168,25 +168,14 @@ nav {
   color: white;
 }
 .item {
-  width: 100px;
-  height: 30px;
+  width: 130px;
+  height: 40px;
   font-size: 8px;
   border: 1px black solid;
-  background-color: gray;
+  background-color: black;
   display: flex;
-}
-.item div.itemImg {
-  width: 30px;
-  height: 30px;
-}
-.item div.itemImg img {
-  width: 30px;
-  height: 30px;
-}
-.item div.itemName {
-  width: 70px;
-  height: 30px;
-  line-height: 30px;
+  margin: 2px;
+  vertical-align: center;
 }
 #characterSet {
   display: flex;
@@ -201,4 +190,41 @@ nav {
   margin: 10px;
   justify-content: center;
   align-items: center;
+}
+.itemList h1 {
+  width: 100%;
+}
+.listWrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.character {
+  width: 45px;
+  height: 60px;
+  display: inline-table;
+  margin: 2px;
+  border: 2px black solid;
+  background-color: black;
+}
+.icon {
+  display: table-row;
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  vertical-align: center;
+}
+.icon img {
+  width: 100%;
+}
+.name {
+  color: white;
+  background-color: black;
+  width: 100%;
+  line-height: center;
+  font-size: 8px;
+  text-align: center;
+  display: table-row;
 }
