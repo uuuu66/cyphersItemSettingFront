@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import itemJson from '../../lib/datas/item.json'
+import itemJson from '../../lib/datas/items.json'
 
 
 

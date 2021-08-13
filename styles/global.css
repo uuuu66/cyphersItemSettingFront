@@ -86,10 +86,7 @@ details p {
 a {
   color: rgb(90, 201, 205);
 }
-span#hiddenword {
-  color: white;
-  animation: textSizeAnim 3s infinite;
-}
+
 @keyframes textSizeAnim {
   0% {
     font-size: 14px;
@@ -117,7 +114,7 @@ div#characterTable {
 div#characteritems {
   text-align: center;
 }
-div#subtitle {
+div.subtitle {
   color: white;
   background-color: black;
   width: 100%;
@@ -227,4 +224,125 @@ nav {
   font-size: 8px;
   text-align: center;
   display: table-row;
+}
+.유니크 {
+  color: rgb(248, 151, 232);
+}
+.레어 {
+  color: rgba(194, 40, 255, 0.678);
+}
+.언커먼 {
+  color: rgb(94, 190, 228);
+}
+.커먼 {
+  color: rgb(190, 187, 187);
+}
+.hidden {
+  color: white;
+  animation: textSizeAnim 3s infinite;
+}
+.itemSetting {
+  background-color: burlywood;
+  border: solid black 3px;
+  text-align: center;
+}
+#inputDiv {
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  width: 100%;
+}
+h2 {
+  width: 100%;
+  text-align: center;
+}
+.tooltip .characterI {
+  background-color: black;
+  position: absolute;
+  transition: transform 1s;
+  display: none;
+}
+.tooltip .itemI {
+  background-color: black;
+  position: absolute;
+  display: none;
+}
+
+.tooltip:hover .characterI {
+  color: white;
+  display: flex;
+  left: inherit;
+  font-size: 10px;
+  width: fit-content;
+  text-align: center;
+}
+.tooltip:hover .itemI {
+  color: white;
+
+  width: 7em;
+  display: flex;
+}
+button.normal {
+  color: black;
+  font-size: 25px;
+  height: 40px;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: ivory;
+}
+.loading {
+  z-index: 1000;
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  align-items: center;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.itemSlot {
+  position: fixed;
+  display: inline;
+  z-index: 200;
+  left: 0%;
+  justify-content: center;
+  align-items: center;
+  max-width: 360px;
+  font-size: 6px;
+  width: 100%;
+  background-color: black;
+}
+.slot1 {
+  width: 100%;
+  display: flex;
+}
+.slot2 {
+  width: 100%;
+
+  display: flex;
+}
+th {
+  width: 40px;
+
+  border: 1px white solid;
+}
+table {
+  color: white;
+  border: 1px white solid;
+}
+tr {
+  border: 1px white solid;
+}
+td {
+  border: 1px white solid;
 }

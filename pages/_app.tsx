@@ -1,9 +1,10 @@
 import { AppProps } from 'next/dist/next-server/lib/router/router'
-import Head from '../components/header'
-import Footer from '../components/footer'
-import Aside from '../components/aside';
-import Layout from '../components/layout';
-import Info from '../components/info';
+import Head from '../components/templates/header'
+import Footer from '../components/templates/footer'
+import Aside from '../components/templates/aside'
+import Layout from '../components/templates/layout'
+import Info from '../components/templates/info'
+
 import '../styles/global.css'
 function MyApp({ Component, pageProps}:AppProps) {
   
