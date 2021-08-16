@@ -1,5 +1,5 @@
 import { ComponentProps,useState } from "react";
-import ImgBtn from './imgBtn'
+import ItemBtn from './itemBtn'
 import {searchStrProcess} from '../../lib/data';
 export default function List(props:ComponentProps<any>){
     const items=props.data;
@@ -13,7 +13,7 @@ export default function List(props:ComponentProps<any>){
                                     return ;
                                 }    
                         }
-                            return <ImgBtn 
+                            return <ItemBtn 
                             type={listType} 
                             code={value.code?value.code:"https://img-api.neople.co.kr/cy/items/"+value.itemId} 
                             data-name={value.name?value.name:value.itemName} 
@@ -21,12 +21,14 @@ export default function List(props:ComponentProps<any>){
                             key={value.name?value.name:value.itemName} 
                             rarity={value.rarityName?value.rarityName:"유니크"}
                             info={value.explainDetail?value.explainDetail:value.name}
+                            slot={props.slot}
                             onBtnEvent={
-                            function(value){ 
-                                return !!props.onListEvent(value);
+                            function(value,src,info,rarity,slot){ 
+                           
+                                return props.onListEvent(value,src,info,rarity,slot);
                                 }
                             }>
-                        </ImgBtn>  
+                        </ItemBtn>  
                 })
     return(
         <div className="listWrap">

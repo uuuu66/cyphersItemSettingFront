@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 import { getStaticProps } from "../../pages/make";
-import Span from '../atoms/span'
+import Span from './span'
 
 export default function Name(props:ComponentProps<any>){
     

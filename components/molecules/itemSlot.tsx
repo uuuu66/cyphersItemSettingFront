@@ -1,71 +1,86 @@
 import { ComponentProps,useState } from "react";
 import Span from '../atoms/span'
+import ItemBtn from "./itemBtn";
+interface item{
+    name:string;
+    src:string;
+    info:string;
+    part:string;
+    rarity:string;
+}
 export default function itemSlot(props:ComponentProps<any>){
-    const itemSlots={
-        "손":"옥스혼",
-        "머리":"전사",
-        "가슴":"옥스혼",
-        "허리":"도적",
-        "다리":"옥스혼",
-        "발":"광전사",
-        "장신구1":"옥스혼",
-        "장신구2":"마법사",
-        "회복킷":"옥스혼",
-        "가속킷":"사제",
-        "공격킷":"옥스혼",
-        "방어킷":"옥수수",
-        "특수킷":"옥스혼",
-        "목":"감자",
-        "장신구3":"옥스혼",
-        "장신구4":"혼스옥",     
+        console.log(props.slot.items)
+    const itemSlots=props.slot.items;
+    const slotKeys=Object.keys(itemSlots);
+    function itemBtn(value:item){
+        if(value!=null)
+        return(
+            <ItemBtn type="itemicon"
+            code={value.src} 
+            data-name={value.name} 
+            name={value.name} 
+            key={value.name} 
+            rarity={value.rarity}
+            info={value.info}
+            slot={value.part}
+            onBtnEvent={
+            function(value,src,info,rarity,slot){ 
+           
+                return props.onListEvent(value,src,info,rarity,slot);
+                }}></ItemBtn>
+        )
+    
     }
-    const slotNames=Object.keys(itemSlots);
-    const [slots,setSlots]=useState(slotNames);
-    return(<div className="itemSlot">
+ 
+    return(<div className={"itemSlot"+props.isOn}>
             <Span rarity="유니크">제목</Span>
-            <div className="slot1">
-                {slots.map((value,i)=>
-                {
-                    if(i<8)
+                <div className="slot1">
+                    {slotKeys.map((value,i)=>
                     {
-                        return(
-                        <table> 
-                            <thead>
-                                <th key={value}>
-                                    {value}
-                                </th>
-                            </thead>
-                            <tr>
-                                <td>{itemSlots[value]}</td>
-                            </tr>
-                        </table>
-                        ) 
+                        if(i<8)
+                        {
+                            return(
+                            <table key={i}>
+                                <tbody>
+                                    <tr>
+                                        <th >
+                                            {value}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td className="slot">{itemBtn(itemSlots[value])}</td>
+                                    </tr>
+                                </tbody> 
+                            </table>
+                            ) 
+                        }
                     }
-                }
-                )}
-            
-            </div>
-            <div className="slot2">
-            {slots.map((value,i)=>
-                {
-                    if(i>=8)
+                    )}
+                
+                </div>
+                <div className="slot2">
+                {slotKeys.map((value,i)=>
                     {
-                        return(
-                        <table> 
-                            <thead>
-                                <th key={value}>
-                                    {value}
-                                </th>
-                                <tr>
-                                    <td>{itemSlots[value]}</td>
-                                </tr>
-                            </thead>
-                        </table>
-                        ) 
+                        if(i>=8)
+                        {
+                            return(
+                            <table key={i}> 
+                                <tbody>
+                                    <tr>
+                                        <th >
+                                            {value}
+                                        </th>
+                                    </tr>
+                                        <tr>
+                                            <td className="slot">{itemBtn(itemSlots[value])}</td>
+                                        </tr>
+                                </tbody>  
+                            </table>
+                            ) 
+                        }
                     }
-                }
-                )}
-            </div>
+                    )}
+                </div>
         </div>
     )
 }

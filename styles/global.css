@@ -44,7 +44,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  display: flex;
   font-family: "gowun dodum", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   overflow-x: hidden;
@@ -156,6 +156,7 @@ nav {
   background-color: gray;
   border: 2px black solid;
   color: white;
+  z-index: 1000;
 }
 .menuText {
   cursor: pointer;
@@ -207,14 +208,17 @@ nav {
   background-color: black;
 }
 .icon {
-  display: table-row;
-  width: 40px;
-  height: 40px;
-  margin: 2px;
+  max-width: 40px;
+  max-height: 40px;
+
   vertical-align: center;
 }
 .icon img {
-  width: 100%;
+  max-height: 40px;
+  min-height: 20px;
+}
+td .icon img {
+  width: 30px;
 }
 .name {
   color: white;
@@ -246,6 +250,10 @@ nav {
   border: solid black 3px;
   text-align: center;
 }
+.itemicon {
+  width: 100%;
+  height: 100%;
+}
 #inputDiv {
   width: 100%;
   text-align: center;
@@ -270,6 +278,11 @@ h2 {
   position: absolute;
   display: none;
 }
+.tooltip .itemiconI {
+  background-color: black;
+  position: absolute;
+  display: none;
+}
 
 .tooltip:hover .characterI {
   color: white;
@@ -279,7 +292,14 @@ h2 {
   width: fit-content;
   text-align: center;
 }
+
 .tooltip:hover .itemI {
+  color: white;
+
+  width: 7em;
+  display: flex;
+}
+.tooltip:hover .itemiconI {
   color: white;
 
   width: 7em;
@@ -310,14 +330,15 @@ button.normal {
   background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
-.itemSlot {
+.itemSlotundefined {
   position: fixed;
   display: inline;
   z-index: 200;
-  left: 0%;
+  top: 30px;
+  left: 0;
   justify-content: center;
   align-items: center;
-  max-width: 360px;
+  max-width: 340px;
   font-size: 6px;
   width: 100%;
   background-color: black;
@@ -332,15 +353,18 @@ button.normal {
   display: flex;
 }
 th {
-  width: 40px;
-
+  width: 35px;
+  height: 35px;
   border: 1px white solid;
 }
 table {
   color: white;
+
   border: 1px white solid;
 }
 tr {
+  width: 35px;
+  height: 35px;
   border: 1px white solid;
 }
 td {

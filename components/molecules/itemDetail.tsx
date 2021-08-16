@@ -3,19 +3,21 @@ import Span from '../atoms/span'
 export default function itemDetail(props:ComponentProps<any>){
     const [type,setType]=useState(props.type);
     const info=props.children;
-
+    
     let Content=[];
     if(type=="item"){
        const data= info.split('\n');
        Content.push(<div key={info}>
        {data.map((value,i)=>{
-            if(i==0){
-                return (<Span key={value} rarity="유니크">{value}<br></br></Span>);
-            }else if(i==1){
-                return (<Span key={value} rarity="언커먼">{value}</Span>);
-            }else{
-                return
-            }
+        if(i==0){
+                return (<Span key={value+i} rarity="유니크">{value}<br></br></Span>);
+        }else if(i==1){    
+        return (<Span key={value+i} rarity="언커먼">{value}<br></br>{data[2]} {data[3]} {data[4]}</Span>);
+        }else if(i>4){
+                return(<Span key={value+i} rarity="커먼">{value}<br></br></Span>)
+        }else{
+            return;
+        }               
         })}
         <br></br>
         <Span rarity="레어"><Span rarity="유니크">클릭</Span><br></br> 아이템 상세보기</Span>
@@ -30,6 +32,7 @@ export default function itemDetail(props:ComponentProps<any>){
     }
     return(
         <div>
+            
             {Content}
         </div>
     )

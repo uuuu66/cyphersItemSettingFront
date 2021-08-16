@@ -64,7 +64,11 @@ export default function make({CharList}){
         ))}
            {isLoading&&<Loading/>}
         <div id='characterTable'>
-          <div className="subtitle"><h1>아이템 세트 만들기</h1></div>
+          <div className="subtitle"><h1>아이템 세트 만들기</h1>
+          <Span rarity="언커먼"><Span rarity="레어">터치</Span> :설명 보기</Span>
+          <br></br>
+          <Span rarity="언커먼"><Span rarity="레어">길게 터치</Span> : 선택하기</Span>
+          </div>
           <h2>캐릭터 검색</h2>
           <Span rarity="레어">영어는 초성만 됨.사유:귀찮아서 </Span>
           <Button onClick={function(){setSearch(null); inputRef.current.value=" "}}>검색 초기화</Button>
