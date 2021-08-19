@@ -16,12 +16,12 @@ class slotInfo{
     }
 }
 class slotParts {
-    "손":slotInfo=null;
-    "머리":slotInfo=null;
-    "가슴":slotInfo=null;
-    "허리":slotInfo=null;
-    "다리":slotInfo=null;
-    "발":slotInfo=null;
+    "손(공격)":slotInfo=null;
+    "머리(치명)":slotInfo=null;
+    "가슴(체력)":slotInfo=null;
+    "허리(회피)":slotInfo=null;
+    "다리(방어)":slotInfo=null;
+    "발(이동)":slotInfo=null;
     "장신구1":slotInfo=null;
     "장신구2":slotInfo=null;
     "회복킷":slotInfo=null;
@@ -31,33 +31,43 @@ class slotParts {
     "특수킷":slotInfo=null;
     "목":slotInfo=null;
     "장신구3":slotInfo=null;
-    "장신구4":slotInfo=null;
-    
+    "장신구4":slotInfo=null;  
 }
-interface slot{
+export interface Islot{
+    idx:number;
     current:boolean;
-    name:string;
+    title:string;
     items:slotParts; 
+    isMaxmize:boolean;
+    isFloat:boolean;
 }
 const ItemSetting=(props:ComponentProps<any>)=>{
+    const onStateChangeEvent=props.onStateChangeEvent??null;
     const defaultSlotParts=new slotParts();
-    const defaultSlot:slot={
+    let defaultSlot:Islot=
+    {
+        idx:0,
         current:true,
-        name:'기본',
-        items:defaultSlotParts
+        title:props.name,
+        items:defaultSlotParts,
+        isMaxmize:false,
+        isFloat:false,
     }
     const [slots,setSlots]=useReducer(actionSlot,[defaultSlot]);
     function actionSlot(slots,action){
         let newSlots=Array.from(slots);
         if(action[0]==="CREATE")
-        newSlots.push(action[1]);
+            newSlots.push(action[1]);
         if(action[0]==="DELETE")
         {
 
         }
-        if(action[0]==="UPDATE")
+        if(action[0]==="EQUIP")
         {   
             newSlots=equipItem(newSlots,action[1],action[2],action[3],action[4],action[5])
+        }
+        if(action[0]==="UNEQUIP"){
+            newSlots=unEquipItem(newSlots,action[1])
         }
         if(action[0]==="SELECT")
         {
@@ -78,9 +88,10 @@ const ItemSetting=(props:ComponentProps<any>)=>{
     }
     function equipItem(state,value,src,info,rarity,slot){
         let current=null;
-        for(const slot of state){
-            if(slot.current==true){
-                current=slot;
+      
+        for(const currentSlot of state){
+            if(currentSlot.current==true){
+                current=currentSlot;
             }   
         }
         const newSlotInfo:slotInfo={
@@ -93,15 +104,26 @@ const ItemSetting=(props:ComponentProps<any>)=>{
         current.items[slot]=newSlotInfo;
         return state;
     }
-  
+    function unEquipItem(state,slot){ 
+        let current=null;
+        for(const currentSlot of state){
+            if(currentSlot.current==true){
+                current=currentSlot;
+            }
+        }
+        current.items[slot]=null;
+        return state;
+    }
   
     return(
         <div className="itemSetting">
             <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>
             <div className="subtitle"><h2>결과</h2></div>
-            {slots.map(value=>(<ItemSlot key={value} slot={value}></ItemSlot>))}
+            {slots.map(value=>(<ItemSlot key={value} slot={value} onListEvent={function(slot){
+                return setSlots(["UNEQUIP",slot]);
+            }} onStateChangeEvent={function(Action,slot){onStateChangeEvent(Action,slot)}}></ItemSlot>))}
             <ItemList key={props.name+props.index} data={props.data} onListEvent={function(value,src,info,rarity,slot){
-                  return  setSlots(["UPDATE",value,src,info,rarity,slot.split("(")[0]]);
+                return  setSlots(["EQUIP",value,src,info,rarity,slot]);
             }}></ItemList>
         </div>
     )

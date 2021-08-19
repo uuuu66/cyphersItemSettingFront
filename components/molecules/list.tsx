@@ -3,18 +3,15 @@ import ItemBtn from './itemBtn'
 import {searchStrProcess} from '../../lib/data';
 export default function List(props:ComponentProps<any>){
     const items=props.data;
-    const [listType,setListType]=useState(props.type);
-   
+    const [listType,setListType]=useState(props.type); 
     const Content=items.map(
-                  
                     value=>{
                         if(props.search!=null){
                                 if(!searchStrProcess(props.search,value.name)){   
                                     return ;
                                 }    
                         }
-                            return <ItemBtn 
-                            type={listType} 
+                            return <ItemBtn type={listType} 
                             code={value.code?value.code:"https://img-api.neople.co.kr/cy/items/"+value.itemId} 
                             data-name={value.name?value.name:value.itemName} 
                             name={value.name?value.name:value.itemName} 
@@ -23,9 +20,8 @@ export default function List(props:ComponentProps<any>){
                             info={value.explainDetail?value.explainDetail:value.name}
                             slot={props.slot}
                             onBtnEvent={
-                            function(value,src,info,rarity,slot){ 
-                           
-                                return props.onListEvent(value,src,info,rarity,slot);
+                                function(value,src,info,rarity,slot){ 
+                                    return props.onListEvent(value,src,info,rarity,slot);
                                 }
                             }>
                         </ItemBtn>  

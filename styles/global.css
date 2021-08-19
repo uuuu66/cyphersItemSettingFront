@@ -206,19 +206,30 @@ nav {
   margin: 2px;
   border: 2px black solid;
   background-color: black;
+  text-align: center;
 }
-.icon {
-  max-width: 40px;
-  max-height: 40px;
+div.itemicon div.icon {
+  width: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+div.itemicon div.icon img {
+  width: inherit;
 
-  vertical-align: center;
+  display: block;
 }
-.icon img {
-  max-height: 40px;
-  min-height: 20px;
+div.item .div.icon {
+  width: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
-td .icon img {
-  width: 30px;
+
+div.item div.icon img {
+  width: 40px;
 }
 .name {
   color: white;
@@ -253,6 +264,7 @@ td .icon img {
 .itemicon {
   width: 100%;
   height: 100%;
+  display: flex;
 }
 #inputDiv {
   width: 100%;
@@ -267,21 +279,29 @@ h2 {
   width: 100%;
   text-align: center;
 }
+
+.tooltip {
+  display: inline-block;
+}
 .tooltip .characterI {
   background-color: black;
   position: absolute;
   transition: transform 1s;
   display: none;
+  font-size: 10px;
 }
 .tooltip .itemI {
   background-color: black;
   position: absolute;
   display: none;
+  font-size: 10px;
 }
 .tooltip .itemiconI {
   background-color: black;
+
   position: absolute;
   display: none;
+  font-size: 10px;
 }
 
 .tooltip:hover .characterI {
@@ -295,13 +315,30 @@ h2 {
 
 .tooltip:hover .itemI {
   color: white;
-
-  width: 7em;
+  width: fit-content;
   display: flex;
 }
 .tooltip:hover .itemiconI {
   color: white;
+  width: fit-content;
+  display: flex;
+}
+.tooltip:checked .characterI {
+  color: white;
+  display: flex;
+  left: inherit;
+  font-size: 10px;
+  width: fit-content;
+  text-align: center;
+}
 
+.tooltip:checked .itemi {
+  color: white;
+  width: 7em;
+  display: flex;
+}
+.tooltip:checked .itemiconI {
+  color: white;
   width: 7em;
   display: flex;
 }
@@ -330,7 +367,46 @@ button.normal {
   background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
-.itemSlotundefined {
+
+.itemSlotNotFloatMini {
+  position: none;
+  display: inline-block;
+  z-index: 200;
+  top: 30px;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+
+  width: fit-content;
+  background-color: gray;
+  border: 2px black solid;
+}
+.itemSlotNotFloatMax {
+  position: none;
+
+  z-index: 200;
+  top: 30px;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+
+  width: 100%;
+  background-color: gray;
+  border: 2px black solid;
+}
+.itemSlotFloatMini {
+  position: fixed;
+  z-index: 200;
+  top: 30px;
+  left: 0;
+  background-color: gray;
+  width: fit-content;
+  display: inline;
+  height: fit-content;
+}
+.itemSlotFloatMax {
   position: fixed;
   display: inline;
   z-index: 200;
@@ -338,10 +414,10 @@ button.normal {
   left: 0;
   justify-content: center;
   align-items: center;
-  max-width: 340px;
-  font-size: 6px;
-  width: 100%;
-  background-color: black;
+  font-size: 0px;
+  width: max-content;
+  background-color: gray;
+  border: 2px black solid;
 }
 .slot1 {
   width: 100%;
@@ -353,20 +429,88 @@ button.normal {
   display: flex;
 }
 th {
-  width: 35px;
-  height: 35px;
+  flex: 2;
+  width: 21px;
+  height: 21px;
   border: 1px white solid;
 }
 table {
+  font-size: 6px;
   color: white;
 
   border: 1px white solid;
 }
-tr {
-  width: 35px;
-  height: 35px;
+tbody {
+  flex-direction: column;
+}
+tr .head {
+  flex: 6;
+  border: 1px white solid;
+}
+tr .tail {
+  flex: 4;
   border: 1px white solid;
 }
 td {
   border: 1px white solid;
+  text-align: center;
+  width: 21px;
+  height: 21px;
+  font-size: 0px;
+}
+
+.statusBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  text-align: center;
+  background-color: darkgray;
+  border-bottom: solid black 3px;
+}
+.statusBar .space {
+  font-size: 15px;
+  flex: 9;
+  text-align: center;
+  color: white;
+}
+.statusBar .tools {
+  font-size: 0px;
+
+  align-items: right;
+}
+.statusBarCurrent {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  text-align: center;
+  background-color: blue;
+  border-bottom: solid black 3px;
+}
+.statusBarCurrent .space {
+  font-size: 15px;
+  flex: 9;
+  text-align: center;
+  color: greenyellow;
+}
+.statusBarCurrent .tools {
+  font-size: 15px;
+  color: black;
+  align-items: right;
+}
+
+.divButton {
+  color: black;
+
+  font-size: 15px;
+  background-color: gray;
+  border-left: 1px black solid;
+  height: 100%;
+  width: 1em;
+  display: inline-block;
+}
+.divButton:checked {
+  background-color: blue;
+  color: yellow;
 }
