@@ -55,7 +55,10 @@ export default function make({CharList}){
 
         })
     }}></List>
-
+    function forceLoading(boolean:boolean,time:number){
+      setLoading(boolean);
+      setTimeout(()=>{setLoading(!boolean);},time)
+    }
     return (
       <div >
         {ActiveList.map((value,index)=>(
@@ -64,6 +67,12 @@ export default function make({CharList}){
           key={value.key} 
           index={index+1} 
           name={value.name}
+          onReady={function(boolean){
+              if(boolean==true){
+                forceLoading(boolean,80);
+              }
+            }
+          }
           ></ItemSetting>
         ))}
            {isLoading&&<Loading/>}

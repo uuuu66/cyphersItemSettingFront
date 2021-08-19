@@ -19,9 +19,10 @@ export default function List(props:ComponentProps<any>){
                             rarity={value.rarityName?value.rarityName:"유니크"}
                             info={value.explainDetail?value.explainDetail:value.name}
                             slot={props.slot}
+                          
                             onBtnEvent={
-                                function(value,src,info,rarity,slot){ 
-                                    return props.onListEvent(value,src,info,rarity,slot);
+                                function(value,src,info,rarity,slot,ready){ 
+                                    return props.onListEvent(value,src,info,rarity,slot,ready);
                                 }
                             }>
                         </ItemBtn>  

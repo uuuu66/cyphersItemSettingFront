@@ -280,23 +280,23 @@ h2 {
   text-align: center;
 }
 
-.tooltip {
+.toolTip {
   display: inline-block;
 }
-.tooltip .characterI {
+.toolTip .characterI {
   background-color: black;
   position: absolute;
   transition: transform 1s;
   display: none;
   font-size: 10px;
 }
-.tooltip .itemI {
+.toolTip .itemI {
   background-color: black;
   position: absolute;
   display: none;
   font-size: 10px;
 }
-.tooltip .itemiconI {
+.toolTip .itemiconI {
   background-color: black;
 
   position: absolute;
@@ -304,7 +304,7 @@ h2 {
   font-size: 10px;
 }
 
-.tooltip:hover .characterI {
+/* .toolTip:visited .characterI {
   color: white;
   display: flex;
   left: inherit;
@@ -313,17 +313,17 @@ h2 {
   text-align: center;
 }
 
-.tooltip:hover .itemI {
+.toolTip:visited .itemI {
   color: white;
   width: fit-content;
   display: flex;
 }
-.tooltip:hover .itemiconI {
+.toolTip:visited .itemiconI {
   color: white;
   width: fit-content;
   display: flex;
-}
-.tooltip:checked .characterI {
+} */
+.toolTip:active .characterI {
   color: white;
   display: flex;
   left: inherit;
@@ -332,14 +332,15 @@ h2 {
   text-align: center;
 }
 
-.tooltip:checked .itemi {
+.toolTip:active .itemI {
   color: white;
-  width: 7em;
+  width: fit-content;
   display: flex;
+  flex-direction: column;
 }
-.tooltip:checked .itemiconI {
+.toolTip:active .itemiconI {
   color: white;
-  width: 7em;
+  width: fit-content;
   display: flex;
 }
 button.normal {
@@ -508,9 +509,50 @@ td {
   border-left: 1px black solid;
   height: 100%;
   width: 1em;
+  flex: 1;
   display: inline-block;
 }
-.divButton:checked {
+.divButton:active {
   background-color: blue;
   color: yellow;
+}
+.toolBarON {
+  position: absolute;
+  width: 50px;
+
+  background-color: black;
+  color: white;
+  animation: forwards 0.5s moveup;
+
+  margin-bottom: 2px;
+  z-index: 300;
+}
+@keyframes moveup {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(2.5px) translateY(-227px);
+  }
+}
+.toolBarON .divButton {
+  display: inline-block;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: rgb(13, 194, 22);
+  color: black;
+  margin-bottom: 2px;
+  border-radius: 15%;
+}
+.toolBarON .space {
+  font-size: 10px;
+
+  width: 100%;
+}
+.toolBarOFF {
+  position: absolute;
+  display: none;
 }

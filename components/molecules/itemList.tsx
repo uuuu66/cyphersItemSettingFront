@@ -15,8 +15,8 @@ const itemList =(props:ComponentProps<any>)=>{
                                 {keysOfKeys.map((va,ia)=>{
                                     return(
                                         <li key={va}>{va}<details><summary>===================</summary>
-                                            <List data={valueOfValues[ia]} slot={va} type="item" onListEvent={function(value,src,info,rarity,slot){
-                                                return props.onListEvent(value,src,info,rarity,slot);}}>
+                                            <List data={valueOfValues[ia]} slot={va} type="item" onListEvent={function(value,src,info,rarity,slot,ready){
+                                                return props.onListEvent(value,src,info,rarity,slot,ready);}}>
                                             </List></details>
                                         </li>
                                     )

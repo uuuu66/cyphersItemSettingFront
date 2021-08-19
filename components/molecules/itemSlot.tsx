@@ -2,39 +2,25 @@ import { ComponentProps,useState } from "react";
 import ItemBtn from "./itemBtn";
 import DivBtn from "../atoms/divButton"
 import StatusBar from "./statusBar"
-import {Islot} from "../organisms/itemSetting";
+import {CslotInfo} from "../organisms/itemSetting";
+
 
 export default function itemSlot(props:ComponentProps<any>){
-    const title=props.slot.title+props.slot.idx;
+    const title=props.slot.title+(props.slot.idx+1);
     const isMaxmize=props.slot.isMaxmize?"Max":"Mini"; 
     const isCurrent=props.slot.current;
     const isFloat=props.slot.isFloat?"Float":"NotFloat";
     const contractedTitle=title.length>4?title.substr(0,title.length-3)+"...":title;
     const [current,setCurrent]=useState(isCurrent);
     const [maxmize,setMaximize]=useState(isMaxmize);
-    const [float,setFloat]=useState(isFloat);
+    const [float,setFloat]=useState(isFloat); 
     const itemSlots=props.slot.items;
     const slotKeys=Object.keys(itemSlots);
-    function itemBtn(value:Islot){
+    function itemBtn(value:CslotInfo){
         if(value==null)
             return
-        if(value.part==="장신구ALL")
         return(
-              <ItemBtn type="itemicon"
-            code={value.src} 
-            data-name={value.name} 
-            name={value.name} 
-            key={value.name} 
-            rarity={value.rarity}
-            info={value.info}
-            slot={value.part}
-            onEquipEvent={
-            function(slot){ 
-                return props.onListEvent(slot);
-            }}>     
-            </ItemBtn>
-        )
-        return(
+        
             <ItemBtn type="itemicon"
             code={value.src} 
             data-name={value.name} 
@@ -43,11 +29,13 @@ export default function itemSlot(props:ComponentProps<any>){
             rarity={value.rarity}
             info={value.info}
             slot={value.part}
-            onEquipEvent={
+        
+            onUnEquipEvent={
             function(slot){ 
                 return props.onListEvent(slot);
             }}>     
             </ItemBtn>
+
         )
     }
     const buttonOne=float=="Float"?currentBtn() :null;

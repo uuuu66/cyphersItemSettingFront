@@ -1,8 +1,8 @@
 
-import { ComponentProps,memo,useReducer,useState } from "react";
+import { ComponentProps,memo,useEffect,useReducer,useState } from "react";
 import ItemList from "../molecules/itemList";
 import ItemSlot from "../molecules/itemSlot";
-class slotInfo{
+export class CslotInfo{
     name:string;
     src:string;
     info:string;
@@ -15,35 +15,35 @@ class slotInfo{
         this.part=part;
     }
 }
-class slotParts {
-    "손(공격)":slotInfo=null;
-    "머리(치명)":slotInfo=null;
-    "가슴(체력)":slotInfo=null;
-    "허리(회피)":slotInfo=null;
-    "다리(방어)":slotInfo=null;
-    "발(이동)":slotInfo=null;
-    "장신구1":slotInfo=null;
-    "장신구2":slotInfo=null;
-    "회복킷":slotInfo=null;
-    "가속킷":slotInfo=null;
-    "공격킷":slotInfo=null;
-    "방어킷":slotInfo=null;
-    "특수킷":slotInfo=null;
-    "목":slotInfo=null;
-    "장신구3":slotInfo=null;
-    "장신구4":slotInfo=null;  
+class CslotParts {
+    "손(공격)":CslotInfo=null;
+    "머리(치명)":CslotInfo=null;
+    "가슴(체력)":CslotInfo=null;
+    "허리(회피)":CslotInfo=null;
+    "다리(방어)":CslotInfo=null;
+    "발(이동)":CslotInfo=null;
+    "장신구1":CslotInfo=null;
+    "장신구2":CslotInfo=null;
+    "회복킷":CslotInfo=null;
+    "가속킷":CslotInfo=null;
+    "공격킷":CslotInfo=null;
+    "방어킷":CslotInfo=null;
+    "특수킷":CslotInfo=null;
+    "목":CslotInfo=null;
+    "장신구3":CslotInfo=null;
+    "장신구4":CslotInfo=null;  
 }
 export interface Islot{
     idx:number;
     current:boolean;
     title:string;
-    items:slotParts; 
+    items:CslotParts; 
     isMaxmize:boolean;
     isFloat:boolean;
 }
 const ItemSetting=(props:ComponentProps<any>)=>{
     const onStateChangeEvent=props.onStateChangeEvent??null;
-    const defaultSlotParts=new slotParts();
+    const defaultSlotParts=new CslotParts();
     let defaultSlot:Islot=
     {
         idx:0,
@@ -86,15 +86,17 @@ const ItemSetting=(props:ComponentProps<any>)=>{
         state[item].current=true;
         return state;
     }
-    function equipItem(state,value,src,info,rarity,slot){
+    function checkCurrent(state){
         let current=null;
-      
         for(const currentSlot of state){
-            if(currentSlot.current==true){
-                current=currentSlot;
-            }   
+            current=currentSlot.current==true?currentSlot:null;  
         }
-        const newSlotInfo:slotInfo={
+        return current; 
+    }
+    function equipItem(state,value,src,info,rarity,slot){
+        let current=checkCurrent(state);
+        
+        const newSlotInfo:CslotInfo={
             name:value,
             src:src,
             info:info,
@@ -105,16 +107,11 @@ const ItemSetting=(props:ComponentProps<any>)=>{
         return state;
     }
     function unEquipItem(state,slot){ 
-        let current=null;
-        for(const currentSlot of state){
-            if(currentSlot.current==true){
-                current=currentSlot;
-            }
-        }
+        let current=checkCurrent(state);
         current.items[slot]=null;
         return state;
     }
-  
+    
     return(
         <div className="itemSetting">
             <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>
@@ -122,7 +119,8 @@ const ItemSetting=(props:ComponentProps<any>)=>{
             {slots.map(value=>(<ItemSlot key={value} slot={value} onListEvent={function(slot){
                 return setSlots(["UNEQUIP",slot]);
             }} onStateChangeEvent={function(Action,slot){onStateChangeEvent(Action,slot)}}></ItemSlot>))}
-            <ItemList key={props.name+props.index} data={props.data} onListEvent={function(value,src,info,rarity,slot){
+            <ItemList key={props.name+props.index} data={props.data} onListEvent={function(value,src,info,rarity,slot,ready){
+                props.onReady(ready)
                 return  setSlots(["EQUIP",value,src,info,rarity,slot]);
             }}></ItemList>
         </div>
