@@ -1,12 +1,19 @@
 import { GetStaticProps } from "next";
 import { getCharList,getItemList } from "../lib/data"
-import List from '../components/molecules/list'
-import  {useState, MutableRefObject,useRef,useReducer } from 'react';
+import BtnList from '../components/molecules/btnList/btnList'
+import  {useState, MutableRefObject,useRef,useReducer, useEffect } from 'react';
 import ItemSetting from "../components/organisms/itemSetting";
 import Span from '../components/atoms/span'
 import Button from '../components/atoms/button'
-import Loading from '../components/molecules/loading'
-
+import Loading from '../components/molecules/popup/loading'
+import Announce from '../components/molecules/popup/announce'
+import Wrap from "../components/atoms/wrap";
+interface IactiveSet{
+  key:number,
+  name:string,
+  data:object,
+  scrollY:number;
+}
 export const getStaticProps:GetStaticProps =async()=> {
     const allCharList = await getCharList();
     const CharList=[];
@@ -29,58 +36,92 @@ export const getStaticProps:GetStaticProps =async()=> {
     }
   }
 export default function make({CharList}){
-    const initialActiveList=[];
+    const initialActiveList:IactiveSet[]=[];
     const [charList,setCharList]=useState(CharList);
     const [ActiveList,setActiveList]=useState(initialActiveList);
     const [search,setSearch]=useState(null);
     const [isLoading,setLoading]=useState(false);
-   
+    const [Announces,setAnnounce]=useState([]);
+    const [TimeOut,setTimeOut]=useState(null);
     const inputRef:MutableRefObject<any>=useRef();
-    const Content=charList[0]=="error"?<div>error</div>: <List type="character" search={search}  data={charList} onListEvent={async function(value){ 
-        
-        setLoading(true);
-        await getItemList(value).then(
-          data=>{
-            let newActive={
-              key:Date.now(),
-              name:value,
-              data:null,
+    function makeList(){
+      return(
+        <BtnList type="character" search={search}  data={charList} onListEvent={async function(value){     
+          setLoading(true);
+          await getItemList(value).then(
+            data=>{
+              let newActive:IactiveSet={
+                key:Date.now(),
+                name:value,
+                data:data,
+                scrollY:null,
+              }
+              setLoading(false);
+              return setActiveList([...ActiveList, newActive]); 
             }
-            setLoading(false);
-          
-            newActive.data=data;
-            return setActiveList([...ActiveList, newActive]); 
-          }
-        ).catch(err=>{
+          ).catch(err=>{
 
-        })
-    }}></List>
+          })
+      }}></BtnList>
+      )}
     function forceLoading(boolean:boolean,time:number){
       setLoading(boolean);
       setTimeout(()=>{setLoading(!boolean);},time)
     }
+   
+    async function announceThings(text,rarity="유니크",basicAnnounce=Announces){
+      let announce=[...basicAnnounce,{text:text,rarity:rarity}];
+        setAnnounce(announce);
+      if(announce.length<=1){
+        return setAnnounceSplice(announce)
+      }else if(announce.length<6){
+        return setAnnounceEmpty()
+      }else{
+        announce=[];
+        setAnnounce([...announce])
+        return announceThings(text,rarity,announce);
+      }
+    }
+    function setAnnounceSplice(announce){
+    setTimeOut(setTimeout(()=>{setAnnounce(announce.splice(0,0))},2000));
+    }
+    function setAnnounceEmpty(){
+      setTimeOut(clearTimeout(TimeOut));
+      setTimeOut(setTimeout(()=>{setAnnounce([])},2000));
+    }
+
+    const Content=charList[0]=="error"?<div>error</div>: makeList();
     return (
-      <div >
+      <div>
         {ActiveList.map((value,index)=>(
           <ItemSetting
-          data={value.data} 
-          key={value.key} 
-          index={index+1} 
-          name={value.name}
-          onReady={function(boolean){
-              if(boolean==true){
-                forceLoading(boolean,80);
+            data={value.data} 
+            key={value.key} 
+            index={index+1} 
+            name={value.name}
+            onAnnounce={
+              function(text,rarity){
+               return announceThings(text,rarity)
               }
             }
+            onReady={
+              function(boolean){
+                const result=!boolean||forceLoading(boolean,80); 
+                return result;
+              }
           }
           ></ItemSetting>
         ))}
+          <Wrap type="announce">
+            <div className="announce">
+              {Announces.length>0&&Announces.map(value=>(<Announce announces={value}></Announce>))}
+            </div>   
+          </Wrap>    
            {isLoading&&<Loading/>}
           <div id='characterTable'>
             <div className="subtitle"><h1>아이템 세트 만들기</h1>
-              <Span rarity="언커먼"><Span rarity="레어">터치</Span> :설명 보기</Span>
+              <Span rarity="언커먼"><Span rarity="레어">터치</Span> : 선택하기</Span>
               <br></br>
-              <Span rarity="언커먼"><Span rarity="레어">길게 터치</Span> : 선택하기</Span>
             </div>
             <h2>캐릭터 검색</h2>
             <Span rarity="레어">영어는 초성만 됨.사유:귀찮아서 </Span>

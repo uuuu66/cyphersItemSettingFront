@@ -1,7 +1,8 @@
 
 import { ComponentProps,memo,useEffect,useReducer,useState } from "react";
-import ItemList from "../molecules/itemList";
-import ItemSlot from "../molecules/itemSlot";
+import ItemList from "../molecules/items/itemList";
+import ItemSlot from "../molecules/items/itemSlot";
+import ItemResult from"../molecules/items/itemResult";
 export class CslotInfo{
     name:string;
     src:string;
@@ -15,7 +16,7 @@ export class CslotInfo{
         this.part=part;
     }
 }
-class CslotParts {
+export class CslotParts {
     "손(공격)":CslotInfo=null;
     "머리(치명)":CslotInfo=null;
     "가슴(체력)":CslotInfo=null;
@@ -116,11 +117,24 @@ const ItemSetting=(props:ComponentProps<any>)=>{
         <div className="itemSetting">
             <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>
             <div className="subtitle"><h2>결과</h2></div>
-            {slots.map(value=>(<ItemSlot key={value} slot={value} onListEvent={function(slot){
-                return setSlots(["UNEQUIP",slot]);
-            }} onStateChangeEvent={function(Action,slot){onStateChangeEvent(Action,slot)}}></ItemSlot>))}
+            <ItemResult slots={slots}></ItemResult>
+            {slots.map(value=>  (
+                                    <ItemSlot 
+                                    key={value} 
+                                    slot={value} 
+                                    onListEvent=
+                                    {function(slot){
+                                        props.onAnnounce(`<${slot}> 해제완료`,"유니크");
+                                        return setSlots(["UNEQUIP",slot]);
+                                        }
+                                    }
+                                    ></ItemSlot>
+                                )
+                        )
+            }
             <ItemList key={props.name+props.index} data={props.data} onListEvent={function(value,src,info,rarity,slot,ready){
                 props.onReady(ready)
+                props.onAnnounce(`<${value}> 장착완료`,"유니크");
                 return  setSlots(["EQUIP",value,src,info,rarity,slot]);
             }}></ItemList>
         </div>

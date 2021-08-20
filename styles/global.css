@@ -556,3 +556,32 @@ td {
   position: absolute;
   display: none;
 }
+.announceWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  z-index: 400;
+  bottom: 0%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.announce {
+  display: block;
+  width: 100%;
+  flex-direction: column;
+  height: fit-content;
+}
+.announceText {
+  width: 100%;
+  text-align: center;
+  border-radius: 10%;
+  background-color: black;
+  border: 1px yellow solid;
+  animation: announceAnim forwards 2s;
+}
+@keyframes announceAnim {
+  100% {
+    opacity: 0;
+  }
+}
