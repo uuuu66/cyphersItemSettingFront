@@ -74,7 +74,7 @@ export default function make({CharList}){
         setAnnounce(announce);
       if(announce.length<=1){
         return setAnnounceSplice(announce)
-      }else if(announce.length<6){
+      }else if(announce.length<3){
         return setAnnounceEmpty()
       }else{
         announce=[];
@@ -114,7 +114,7 @@ export default function make({CharList}){
         ))}
           <Wrap type="announce">
             <div className="announce">
-              {Announces.length>0&&Announces.map(value=>(<Announce announces={value}></Announce>))}
+              {Announces.length>0&&Announces.map((value,i)=>(<Announce key={value+i} announces={value}></Announce>))}
             </div>   
           </Wrap>    
            {isLoading&&<Loading/>}

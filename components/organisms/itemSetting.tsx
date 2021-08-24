@@ -2,17 +2,20 @@
 import { ComponentProps,memo,useEffect,useReducer,useState } from "react";
 import ItemList from "../molecules/items/itemList";
 import ItemSlot from "../molecules/items/itemSlot";
-import ItemResult from"../molecules/items/itemResult";
+import ItemResult,{getSlotsAbillities,Iabillities} from"../molecules/items/itemResult";
+import ItemDetaiView from "../molecules/items/itemDetailView";
+
 export class CslotInfo{
     name:string;
     src:string;
     info:string;
     rarity:string;
     part:string;
-    constructor(value,src,info,part){
+    constructor(value,src,info,rarity,part){
         this.name=value;
         this.src=src;
         this.info=info;
+        this.rarity=rarity;
         this.part=part;
     }
 }
@@ -41,9 +44,11 @@ export interface Islot{
     items:CslotParts; 
     isMaxmize:boolean;
     isFloat:boolean;
+    result:Iabillities[];
 }
 const ItemSetting=(props:ComponentProps<any>)=>{
     const onStateChangeEvent=props.onStateChangeEvent??null;
+    const [detailTarget,setDTarget]=useState(new CslotInfo("없음","없음","없음","없음","없음"));
     const defaultSlotParts=new CslotParts();
     let defaultSlot:Islot=
     {
@@ -53,10 +58,11 @@ const ItemSetting=(props:ComponentProps<any>)=>{
         items:defaultSlotParts,
         isMaxmize:false,
         isFloat:false,
+        result:null,
     }
     const [slots,setSlots]=useReducer(actionSlot,[defaultSlot]);
     function actionSlot(slots,action){
-        let newSlots=Array.from(slots);
+        let newSlots:Islot[]=Array.from(slots);
         if(action[0]==="CREATE")
             newSlots.push(action[1]);
         if(action[0]==="DELETE")
@@ -75,9 +81,10 @@ const ItemSetting=(props:ComponentProps<any>)=>{
             newSlots= selectSlot(newSlots,action[1])
         }
         
+        newSlots=setResult(newSlots);
         return newSlots;
     }    
-    function selectSlot(state,item){
+    function selectSlot(state:Islot[],item){
         for(const slot of state){
             if(slot.current==true){
                 slot.current=false;
@@ -87,14 +94,14 @@ const ItemSetting=(props:ComponentProps<any>)=>{
         state[item].current=true;
         return state;
     }
-    function checkCurrent(state){
-        let current=null;
+    function checkCurrent(state:Islot[]){
+        let current:Islot=null;
         for(const currentSlot of state){
             current=currentSlot.current==true?currentSlot:null;  
         }
         return current; 
     }
-    function equipItem(state,value,src,info,rarity,slot){
+    function equipItem(state:Islot[],value,src,info,rarity,slot){
         let current=checkCurrent(state);
         
         const newSlotInfo:CslotInfo={
@@ -103,40 +110,62 @@ const ItemSetting=(props:ComponentProps<any>)=>{
             info:info,
             rarity:rarity,
             part:slot,
+           
         }
         current.items[slot]=newSlotInfo;
         return state;
     }
-    function unEquipItem(state,slot){ 
+    function unEquipItem(state:Islot[],slot){ 
         let current=checkCurrent(state);
         current.items[slot]=null;
         return state;
     }
-    
+    function setResult(state:Islot[]){
+        const current=checkCurrent(state);
+        current.result=getSlotsAbillities(current);
+        return state;
+    }
+    const onWatchDetail=(name,src,info,rarity,slot)=>{
+        console.log("onWatchDetail");
+        const newTarget=new CslotInfo(name,src,info,rarity,slot);
+        return setDTarget(newTarget);
+    }
     return(
         <div className="itemSetting">
-            <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>
-            <div className="subtitle"><h2>결과</h2></div>
-            <ItemResult slots={slots}></ItemResult>
-            {slots.map(value=>  (
+            <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>  
+            {slots.map(value=>(  <div className="result" key={value.title+value.idx}>
+                                    <h1>{value.title+(value.idx+1)}</h1>
+                                    <h2>슬롯</h2>
                                     <ItemSlot 
-                                    key={value} 
-                                    slot={value} 
+                                    onWatchDetail={function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}}
+                                    slot={value}
                                     onListEvent=
-                                    {function(slot){
+                                    {function(slot:string){
                                         props.onAnnounce(`<${slot}> 해제완료`,"유니크");
                                         return setSlots(["UNEQUIP",slot]);
                                         }
                                     }
                                     ></ItemSlot>
+                                    <h2>능력치</h2>
+                                    <ItemResult slot={value}></ItemResult>
+                                    </div>
                                 )
                         )
             }
-            <ItemList key={props.name+props.index} data={props.data} onListEvent={function(value,src,info,rarity,slot,ready){
-                props.onReady(ready)
-                props.onAnnounce(`<${value}> 장착완료`,"유니크");
-                return  setSlots(["EQUIP",value,src,info,rarity,slot]);
-            }}></ItemList>
+            <h1>아이템 상세보기</h1>
+            <ItemDetaiView target={detailTarget} ></ItemDetaiView>
+            <ItemList key={props.name+props.index} data={props.data} 
+            onWatchDetail={
+                function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}
+            }
+            onListEvent={
+                function(value,src,info,rarity,slot,ready)
+                {
+                    props.onReady(ready)
+                    props.onAnnounce(`<${value}> 장착완료`,"유니크");
+                    return  setSlots(["EQUIP",value,src,info,rarity,slot]);
+                }
+            }></ItemList>
         </div>
     )
 }

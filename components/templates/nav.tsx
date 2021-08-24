@@ -5,10 +5,10 @@ import { ComponentProps } from "react";
 export default function Nav(props:ComponentProps<any>){
     const menuText=props.data;
     return (
-        <nav>
+        <nav onClick={function(e){props.onLink(e)}}>
             
            {menuText.map((menu)=>(
-                    <Link key={menu.index} href={menu.href}><div className="menuText"  >{menu.title}</div></Link>
+                    <Link key={menu.index}  href={menu.href}><div className="menuText"  >{menu.title}</div></Link>
            ))}
            
         </nav>

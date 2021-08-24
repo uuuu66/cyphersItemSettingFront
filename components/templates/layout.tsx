@@ -21,7 +21,7 @@ export default function layout({children}:{children:ReactNode}){
             <div id="menuBtn" onClick= {menuStatus} >
                 {menuState.text}
             </div>
-            {!menuState.index?null:<Nav data={navList}></Nav>}
+            {!menuState.index?null:<Nav onLink={function(e){menuStatus(e)}} data={navList}></Nav>}
             <article>
                 {children}
             </article>       

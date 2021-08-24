@@ -1,6 +1,6 @@
 
 import {  ComponentProps } from "react";
-import ItemDetail from "../items/itemDetail";
+import TooltipData from "./tooltipData";
 import ToolBar from "../bars/toolBar";
 export default function Tooltip(props:ComponentProps<any>){
     function toolBar(props){
@@ -22,7 +22,7 @@ export default function Tooltip(props:ComponentProps<any>){
                     <div className={props.type+"I"}>
                         {toolBar(props)}
                         <br></br>
-                        <ItemDetail type={props.type} rarity={props.rarity} name={props.name}>{props.info}</ItemDetail>
+                        <TooltipData type={props.type} rarity={props.rarity} name={props.name}>{props.info}</TooltipData>
                     </div>
                 )
         return( <div className="basic">

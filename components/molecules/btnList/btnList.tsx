@@ -20,6 +20,11 @@ export default function BtnList(props:ComponentProps<any>){
                             rarity={value.rarityName?value.rarityName:"유니크"}
                             info={value.explainDetail?value.explainDetail:value.name}
                             slot={props.slot}
+                            onWatchDetail={
+                                function(name,src,info,rarity,slot){
+                                    return props.onWatchDetail(name,src,info,rarity,slot);
+                                }
+                            }
                             onBtnEvent={
                                 function(value,src,info,rarity,slot,ready){ 
                                     return props.onListEvent(value,src,info,rarity,slot,ready);

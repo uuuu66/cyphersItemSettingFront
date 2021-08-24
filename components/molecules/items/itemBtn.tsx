@@ -91,7 +91,7 @@ export default function imgBtn(props:ComponentProps<any>){
         return clearInterval(mouseInterval);
     }
     function seeDetail(){
-        onWatchDetail?onWatchDetail(name,src,info,rarity,slot):null;
+        type!="character"?onWatchDetail(name,src,info,rarity,slot):null;
         mouseFlag=false;
         startTime=0; 
         return clearInterval(mouseInterval);  

@@ -3,19 +3,33 @@ import ItemBtn from "./itemBtn";
 import DivBtn from "../../atoms/divButton"
 import StatusBar from "../../molecules/bars/statusBar"
 import {CslotInfo} from "../../organisms/itemSetting";
-
+import Span from "../../atoms/span"
+import { Iabillities } from "./itemResult";
 
 export default function itemSlot(props:ComponentProps<any>){
     const title=props.slot.title+(props.slot.idx+1);
     const isMaxmize=props.slot.isMaxmize?"Max":"Mini"; 
     const isCurrent=props.slot.current;
     const isFloat=props.slot.isFloat?"Float":"NotFloat";
+    const result=props.slot.result;
     const contractedTitle=title.length>4?title.substr(0,title.length-3)+"...":title;
     const [current,setCurrent]=useState(isCurrent);
     const [maxmize,setMaximize]=useState(isMaxmize);
     const [float,setFloat]=useState(isFloat); 
     const itemSlots=props.slot.items;
     const slotKeys=Object.keys(itemSlots);
+    console.log(result);
+    const Iabillities:Iabillities={
+        "공격력":0,
+        "치명타":0,
+        "방어력":0,
+        "체력":0,
+        "회피":0,
+        "이동속도":0,
+        "공격속도":0,
+        "부가효과":{},
+    };
+    const abillities=Object.keys(Iabillities);
     function itemBtn(value:CslotInfo){
         if(value==null)
             return
@@ -29,7 +43,11 @@ export default function itemSlot(props:ComponentProps<any>){
             rarity={value.rarity}
             info={value.info}
             slot={value.part}
-        
+            onWatchDetail={
+                function(name,src,info,rarity,part){
+                    return props.onWatchDetail(name,src,info,rarity,part)
+                }
+            }
             onUnEquipEvent={
             function(slot){ 
                 return props.onListEvent(slot);
@@ -143,7 +161,16 @@ export default function itemSlot(props:ComponentProps<any>){
                     }
                     )}
                 </div>
-                 
+                <div className={`summaryResult${float}`}>
+                    {result&&abillities.map((abil,i)=>{
+                        if(abil!=="부가효과")
+                            
+
+                         return i==4?<Span  key={i+abil}rarity="유니크">{`${abil}:${result[0][abil]} `}<br></br></Span>:<Span  key={i +abil}rarity="유니크">{`${abil}:${result[0][abil]}   `}</Span>
+                        }
+                        
+                    )}
+                </div>
             </div>    
         )
     }

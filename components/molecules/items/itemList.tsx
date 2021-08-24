@@ -19,6 +19,12 @@ const itemList =(props:ComponentProps<any>)=>{
                                             data={items[ia]} 
                                             slot={va} 
                                             type="item" 
+                                            onWatchDetail=
+                                            {function(name,src,info,rarity,slot)
+                                                {
+                                                return props.onWatchDetail(name,src,info,rarity,slot);
+                                                }
+                                            }
                                             onListEvent=
                                             {function(value,src,info,rarity,slot,ready)
                                                 {
