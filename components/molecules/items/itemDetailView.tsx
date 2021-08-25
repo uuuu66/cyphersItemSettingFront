@@ -2,6 +2,7 @@ import { ComponentProps } from "react";
 import Icon from "../../atoms/icon"
 import Span from "../../atoms/span"
 export default function ItemDetaiView({target}:ComponentProps<any>){
+    
     const src=target.src;
     const name=target.name;
     const info=target.info;

@@ -378,7 +378,6 @@ button.normal {
 }
 
 .itemSlotNotFloatMini {
-  position: none;
   display: inline-block;
   z-index: 200;
   top: 30px;
@@ -392,9 +391,7 @@ button.normal {
   border: 2px black solid;
 }
 .itemSlotNotFloatMax {
-  position: none;
-
-  z-index: 200;
+  /* z-index: 200;
   top: 30px;
   left: 0;
   justify-content: center;
@@ -403,21 +400,41 @@ button.normal {
 
   width: 100%;
   background-color: gray;
+  border: 2px black solid; */
+  display: inline-block;
+  z-index: 200;
+  top: 30px;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+
+  width: fit-content;
+  background-color: gray;
   border: 2px black solid;
 }
 .itemSlotFloatMini {
-  position: fixed;
-  z-index: 200;
+  /* z-index: 200;
   top: 30px;
   left: 0;
   background-color: gray;
   width: fit-content;
   display: inline;
-  height: fit-content;
+  height: fit-content; */
+  display: inline-block;
+  z-index: 200;
+  top: 30px;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+
+  width: fit-content;
+  background-color: gray;
+  border: 2px black solid;
 }
 .itemSlotFloatMax {
-  position: fixed;
-  display: inline;
+  /* display: inline;
   z-index: 200;
   top: 30px;
   left: 0;
@@ -426,6 +443,17 @@ button.normal {
   font-size: 0px;
   width: max-content;
   background-color: black;
+  border: 2px black solid; */
+  display: inline-block;
+  z-index: 200;
+  top: 30px;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 0px;
+
+  width: fit-content;
+  background-color: gray;
   border: 2px black solid;
 }
 .slot1 {
@@ -604,12 +632,14 @@ td {
 }
 .result h1 {
   font-size: 20px;
-  border: 1px solid white;
   margin-bottom: 5px;
+  width: 99%;
+  border: cornsilk 2px dotted;
 }
 .result h2 {
   font-size: 15px;
-  border: 1px solid white;
+  width: 99%;
+  border: cornsilk 2px dotted;
   margin-bottom: 5px;
 }
 table.result tbody {
@@ -644,4 +674,9 @@ div.sideEffect {
   display: inline-block;
   font-size: 10px;
   width: 300px;
+}
+.floatSlots {
+  top: 30px;
+  left: 0;
+  position: fixed;
 }

@@ -1,5 +1,5 @@
 import Span from "../../atoms/span"
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, memo, useCallback, useMemo } from "react";
 
 import {CslotInfo,Islot} from "../../organisms/itemSetting"
 export interface Iabillities{
@@ -13,12 +13,12 @@ export interface Iabillities{
     "부가효과":object;
    
 }
-export default function Result({slot}:ComponentProps<any>){
+const Result=({slot}:ComponentProps<any>)=>{
     
-    const abillities=getSlotsAbillities(slot);
-   
+    const abillities=useMemo(()=>getSlotsAbillities(slot),[slot]);
+    console.log("result");
     const abilNames=Object.keys(abillities[0]); 
-    function renderAbills(value,i,name){
+    const renderAbills= useCallback((value,i,name)=>{
         return(
         <div key={i}>
             <Span rarity="유니크">{name}</Span>
@@ -26,9 +26,9 @@ export default function Result({slot}:ComponentProps<any>){
             <Span rarity="언커먼">{value[name].toFixed(2)}</Span>
         </div>
         )
-    }
-    function renderSideEffect(value,i,name){
-        console.log(value,value[name])
+    },[slot])
+    const renderSideEffect=useCallback((value,i,name)=>{
+       
         const items=Object.keys(value[name]);
         return(
             <div key={i}>
@@ -52,7 +52,7 @@ export default function Result({slot}:ComponentProps<any>){
                     
             </div>   
         )
-    }
+    },[slot])
     return(<div className="result">
             <div className="abillity">
             {abillities.map((value,i)=>{
@@ -116,7 +116,7 @@ export function getSlotsAbillities(slot:Islot)
            processSetSideEffect([value],name)
            return result;
         }
-        console.log(name);
+      
         const abilName=value.split(":")[0].split(" ")[0]
         let abilStrs:string[]=value.split(":")
         const abilNum=processPercentToNum(abilStrs[1]);
@@ -142,3 +142,4 @@ export function getSlotsAbillities(slot:Islot)
         return flag;
     }
 }
+export default memo(Result)

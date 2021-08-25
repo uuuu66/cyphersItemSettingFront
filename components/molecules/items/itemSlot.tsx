@@ -1,4 +1,4 @@
-import { ComponentProps,useState } from "react";
+import { ComponentProps,memo,useCallback,useState } from "react";
 import ItemBtn from "./itemBtn";
 import DivBtn from "../../atoms/divButton"
 import StatusBar from "../../molecules/bars/statusBar"
@@ -6,19 +6,22 @@ import {CslotInfo} from "../../organisms/itemSetting";
 import Span from "../../atoms/span"
 import { Iabillities } from "./itemResult";
 
-export default function itemSlot(props:ComponentProps<any>){
+
+
+const itemSlot=(props:ComponentProps<any>)=>{
     const title=props.slot.title+(props.slot.idx+1);
-    const isMaxmize=props.slot.isMaxmize?"Max":"Mini"; 
+    const idx=props.slot.idx;
+    const isMaximize=props.isMaximize?"Max":"Mini"; 
+    const onMaximize=props.onMaximize??null;
     const isCurrent=props.slot.current;
-    const isFloat=props.slot.isFloat?"Float":"NotFloat";
+    const isFloat=props.isFloat?"Float":"NotFloat";
+    const onFloat=props.onFloat??null;
+    const onCurrent=props.onCurrent??null;
     const result=props.slot.result;
     const contractedTitle=title.length>4?title.substr(0,title.length-3)+"...":title;
-    const [current,setCurrent]=useState(isCurrent);
-    const [maxmize,setMaximize]=useState(isMaxmize);
-    const [float,setFloat]=useState(isFloat); 
     const itemSlots=props.slot.items;
     const slotKeys=Object.keys(itemSlots);
-    console.log(result);
+   
     const Iabillities:Iabillities={
         "공격력":0,
         "치명타":0,
@@ -56,61 +59,60 @@ export default function itemSlot(props:ComponentProps<any>){
 
         )
     }
-    const buttonOne=float=="Float"?currentBtn() :null;
-    const buttonTwo=float=="Float"?minimizeBtn():currentBtn();
-    const buttonThree=float=="Float"?closeBtn():floatBtn();
+    
    
-    function minimizeBtn(){
+    const minimizeBtn=useCallback(()=>{
         return(
             <DivBtn 
             onBtnClick=
             {function(){
-                    setMaximize("Mini");
+                    onMaximize(idx,props.isMaximize);
             }}>-</DivBtn>
         )
-    }
-    function maximizeBtn(){
+    },[isMaximize])
+    const maximizeBtn=useCallback(()=>{
         return(
             <DivBtn  
             onBtnClick=        
             {function(){         
-                setMaximize("Max");
+                    onMaximize(idx,props.isMaximize);
             }}>□</DivBtn>
         )
-    }
-    function closeBtn(){
+    },[isMaximize])
+    const closeBtn=useCallback(()=>{
         return(
             <DivBtn 
             onBtnClick=
             {function(){
-                    setFloat("NotFloat");
-                    setMaximize("Mini")
+                    onFloat(idx,props.isFloat);
             }}>x</DivBtn>
         )
-    }
-    function floatBtn(){
+    },[isFloat])
+    const floatBtn=useCallback(()=>{
         return(
             <DivBtn 
             onBtnClick=
             {function(){
-                    setFloat("Float");
-                    setMaximize("Max")
+                    onFloat(idx,props.isFloat);              
             }}>+</DivBtn>
         )
-    }
-    function currentBtn(){      
+    },[isFloat])
+    const currentBtn=useCallback(()=>{      
             return(
                 <DivBtn 
                 onBtnClick=
                 {function(){
-                        setCurrent(!current);
-                }}>{current==true?"∧":"∨"}</DivBtn>
+                        onCurrent(idx,props.slot.current);
+                }}>{isCurrent==true?"∧":"∨"}</DivBtn>
             )      
-    }
-    function maxmizeSlot(){
+    },[isCurrent])
+    const buttonOne=isFloat=="Float"?currentBtn() :null;
+    const buttonTwo=isFloat=="Float"?minimizeBtn():currentBtn();
+    const buttonThree=isFloat=="Float"?closeBtn():floatBtn();
+    const maxmizeSlot=useCallback(()=>{
         return(
-            <div className={"itemSlot"+float+maxmize}>
-                <StatusBar title={title} current={current}>             
+            <div className={"itemSlot"+isFloat+isMaximize}>
+                <StatusBar title={title} current={isCurrent}>             
                         {buttonOne}
                         {buttonTwo}
                         {buttonThree}
@@ -161,11 +163,9 @@ export default function itemSlot(props:ComponentProps<any>){
                     }
                     )}
                 </div>
-                <div className={`summaryResult${float}`}>
+                <div className={`summaryResult${isFloat}`}>
                     {result&&abillities.map((abil,i)=>{
                         if(abil!=="부가효과")
-                            
-
                          return i==4?<Span  key={i+abil}rarity="유니크">{`${abil}:${result[0][abil]} `}<br></br></Span>:<Span  key={i +abil}rarity="유니크">{`${abil}:${result[0][abil]}   `}</Span>
                         }
                         
@@ -173,22 +173,23 @@ export default function itemSlot(props:ComponentProps<any>){
                 </div>
             </div>    
         )
-    }
-    function minimizeSlot(){
+    },[isCurrent,isFloat,isMaximize,itemSlots,result])
+    const minimizeSlot=useCallback(()=>{
         return(
             <div className="itemSlotFloatMini">
-                <StatusBar title={contractedTitle} current={current}>
+                <StatusBar title={contractedTitle} current={isCurrent}>
                     {currentBtn()}
                     {maximizeBtn()}
                     {closeBtn()}
                 </StatusBar>
             </div>
         )  
-    }
-    const Content=float=="Float"?(maxmize=="Max"?maxmizeSlot():minimizeSlot()):(maxmizeSlot())
+    },[isCurrent,isFloat,isMaximize,itemSlots,result])
+    const Content=isFloat=="Float"?(isMaximize=="Max"?maxmizeSlot():minimizeSlot()):(maxmizeSlot())
     return(
        <>
        {Content}
        </>
     )
 }
+export default  memo(itemSlot);

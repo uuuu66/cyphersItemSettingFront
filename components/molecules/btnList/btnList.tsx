@@ -1,17 +1,14 @@
-import { ComponentProps,useState } from "react";
+import { ComponentProps,useCallback,useState,memo } from "react";
 import ItemBtn from '../items/itemBtn'
 import {searchStrProcess} from '../../../lib/data';
 import List from '../list/list';
-export default function BtnList(props:ComponentProps<any>){
+const BtnList=(props:ComponentProps<any>)=>{
+    
     const items=props.data;
     const [listType,setListType]=useState(props.type); 
-    const Content=items.map(
+    const Content=useCallback(()=>items.map(
                     value=>{
-                        if(props.search!=null){
-                                if(!searchStrProcess(props.search,value.name)){   
-                                    return ;
-                                }    
-                        }
+                       
                             return <ItemBtn type={listType} 
                             code={value.code?value.code:"https://img-api.neople.co.kr/cy/items/"+value.itemId} 
                             data-name={value.name?value.name:value.itemName} 
@@ -31,10 +28,11 @@ export default function BtnList(props:ComponentProps<any>){
                                 }
                             }>
                         </ItemBtn>  
-                })
+                }),[items])
     return(
        <List>
-           {Content}
+           {Content()}
        </List>
     )
 }
+export default memo(BtnList)

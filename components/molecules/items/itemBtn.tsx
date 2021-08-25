@@ -42,6 +42,9 @@ export default function imgBtn(props:ComponentProps<any>){
         setToolBarTimeOut(clearTimeout(toolBarTimeOut));
         const on=On=="ON"?"OFF":"ON";
         setToolBarTimeOut(setTimeout(()=>{setOn("OFF")},3000));
+        mouseFlag=false;
+        startTime=0; 
+        clearInterval(mouseInterval);
         return setOn(on);
     }
     function makeToolBar(){
@@ -108,7 +111,6 @@ export default function imgBtn(props:ComponentProps<any>){
             onTouchStart={()=>{mouseCapture()}}
             onTouchEnd={(e)=>{e.preventDefault();mouseUp()}}
             onTouchCancelCapture={(e)=>{e.preventDefault(); return;}}
-          
             >
             <Icon src={src} alt={name} ></Icon>
             {type!="itemicon"&&<Name name={name} rarity={rarity}></Name>}

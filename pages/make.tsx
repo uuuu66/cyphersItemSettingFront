@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { getCharList,getItemList } from "../lib/data"
 import BtnList from '../components/molecules/btnList/btnList'
-import  {useState, MutableRefObject,useRef,useReducer, useEffect } from 'react';
+import  {useState, MutableRefObject,useRef, useCallback } from 'react';
 import ItemSetting from "../components/organisms/itemSetting";
 import Span from '../components/atoms/span'
 import Button from '../components/atoms/button'
@@ -36,6 +36,7 @@ export const getStaticProps:GetStaticProps =async()=> {
     }
   }
 export default function make({CharList}){
+ 
     const initialActiveList:IactiveSet[]=[];
     const [charList,setCharList]=useState(CharList);
     const [ActiveList,setActiveList]=useState(initialActiveList);
@@ -46,7 +47,8 @@ export default function make({CharList}){
     const inputRef:MutableRefObject<any>=useRef();
     function makeList(){
       return(
-        <BtnList type="character" search={search}  data={charList} onListEvent={async function(value){     
+        <BtnList type="character" search={search}  data={charList} onListEvent={async function(value){   
+            
           setLoading(true);
           await getItemList(value).then(
             data=>{
@@ -69,7 +71,7 @@ export default function make({CharList}){
       setTimeout(()=>{setLoading(!boolean);},time)
     }
    
-    async function announceThings(text,rarity="유니크",basicAnnounce=Announces){
+     function announceThings(text,rarity="유니크",basicAnnounce=Announces){
       let announce=[...basicAnnounce,{text:text,rarity:rarity}];
         setAnnounce(announce);
       if(announce.length<=1){
@@ -89,29 +91,31 @@ export default function make({CharList}){
       setTimeOut(clearTimeout(TimeOut));
       setTimeOut(setTimeout(()=>{setAnnounce([])},2000));
     }
-
+    const itemSettings=useCallback(()=>{
+   
+   return   ActiveList.map((value,index)=>(
+     <ItemSetting
+         data={value.data} 
+         key={value.key} 
+         index={index+1} 
+         name={value.name}
+         onAnnounce={
+           function(text,rarity){
+            return announceThings(text,rarity)
+           }
+         }
+         onReady={
+           function(boolean){
+             const result=!boolean||forceLoading(boolean,80); 
+             return result;
+           }
+       }
+       ></ItemSetting>
+     ))},[ActiveList])
     const Content=charList[0]=="error"?<div>error</div>: makeList();
     return (
       <div>
-        {ActiveList.map((value,index)=>(
-          <ItemSetting
-            data={value.data} 
-            key={value.key} 
-            index={index+1} 
-            name={value.name}
-            onAnnounce={
-              function(text,rarity){
-               return announceThings(text,rarity)
-              }
-            }
-            onReady={
-              function(boolean){
-                const result=!boolean||forceLoading(boolean,80); 
-                return result;
-              }
-          }
-          ></ItemSetting>
-        ))}
+        {itemSettings()}
           <Wrap type="announce">
             <div className="announce">
               {Announces.length>0&&Announces.map((value,i)=>(<Announce key={value+i} announces={value}></Announce>))}
