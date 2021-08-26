@@ -2,11 +2,11 @@ import { ComponentProps,memo,useCallback} from "react";
 import BtnList from '../btnList/btnList'
 import Span from '../../atoms/span'
 export default function itemList(props:ComponentProps<any>){
-
+      
         const itemsObject=Object.values(props.data);
         let keys=Object.keys(props.data);
         keys[1]="공통";
-        const  Content =useCallback(()=>keys.map((v,i)=>
+        const  Content= keys.map((v,i)=>
             {
                 const keysOfKeys=Object.keys(itemsObject[i]);
                 const items=Object.values(itemsObject[i]);
@@ -41,7 +41,7 @@ export default function itemList(props:ComponentProps<any>){
                         </div>
                     )
             }
-        ),[keys])
+        )
     return(
     <div className="itemList">  
         <div className="subtitle"><h2>아이템 목록</h2>
@@ -50,7 +50,7 @@ export default function itemList(props:ComponentProps<any>){
             <Span rarity="언커먼"><Span rarity="레어">길게 터치</Span> : 아이템 상세보기</Span>
         </div>
         <div>
-            {Content()}
+            {Content}
         </div>
     </div>  
     )

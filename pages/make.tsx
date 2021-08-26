@@ -44,11 +44,10 @@ export default function make({CharList}){
     const [isLoading,setLoading]=useState(false);
     const [Announces,setAnnounce]=useState([]);
     const [TimeOut,setTimeOut]=useState(null);
-    const inputRef:MutableRefObject<any>=useRef();
+
     function makeList(){
       return(
-        <BtnList type="character" search={search}  data={charList} onListEvent={async function(value){   
-            
+        <BtnList type="character"  data={charList} onListEvent={async function(value){      
           setLoading(true);
           await getItemList(value).then(
             data=>{
@@ -65,7 +64,8 @@ export default function make({CharList}){
 
           })
       }}></BtnList>
-      )}
+      )
+    }
     function forceLoading(boolean:boolean,time:number){
       setLoading(boolean);
       setTimeout(()=>{setLoading(!boolean);},time)
@@ -91,9 +91,9 @@ export default function make({CharList}){
       setTimeOut(clearTimeout(TimeOut));
       setTimeOut(setTimeout(()=>{setAnnounce([])},2000));
     }
-    const itemSettings=useCallback(()=>{
-   
-   return   ActiveList.map((value,index)=>(
+  const itemSettings=useCallback(()=>{  
+    console.log("called");
+    return   ActiveList.map((value,index)=>(
      <ItemSetting
          data={value.data} 
          key={value.key} 
@@ -112,7 +112,7 @@ export default function make({CharList}){
        }
        ></ItemSetting>
      ))},[ActiveList])
-    const Content=charList[0]=="error"?<div>error</div>: makeList();
+   
     return (
       <div>
         {itemSettings()}
@@ -127,13 +127,7 @@ export default function make({CharList}){
               <Span rarity="언커먼"><Span rarity="레어">터치</Span> : 선택하기</Span>
               <br></br>
             </div>
-            <h2>캐릭터 검색</h2>
-            <Span rarity="레어">영어는 초성만 됨.사유:귀찮아서 </Span>
-            <Button onClick={function(){setSearch(null); inputRef.current.value=" "}}>검색 초기화</Button>
-            <div id="inputDiv">
-              <input ref={inputRef} id="charSearch" onChange={function(e){setSearch(e.target.value)}}></input>
-            </div> 
-            {Content}
+            {charList[0]=="error"?<div>error</div>: makeList()}
           </div>
       </div>
     )

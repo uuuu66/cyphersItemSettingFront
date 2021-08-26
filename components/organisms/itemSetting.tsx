@@ -47,7 +47,7 @@ export interface Islot{
     isFloat:boolean;
     result:Iabillities[];
 }
- const ItemSetting=(props:ComponentProps<any>)=>{
+ export default function ItemSetting(props:ComponentProps<any>){
     const onStateChangeEvent=props.onStateChangeEvent??null;
     const [detailTarget,setDTarget]=useState(new CslotInfo("없음","없음","없음","없음","없음"));
     const defaultSlotParts=new CslotParts();
@@ -176,55 +176,7 @@ export interface Islot{
         }
         return false;
     }
-   
-      
-    
-    return(
-        <div className="itemSetting">
-            <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>  
-            {slots.map(value=>(  <div className="result" key={value.title+value.idx}>
-                                    <h1>{value.title+(value.idx+1)}</h1>
-                                    <h2>슬롯</h2>
-                                    <div className="floatSlots">
-                                    {value.isFloat&&<ItemSlot
-                                    isMaximize={value.isMaxmize}
-                                    isFloat={value.isFloat} 
-                                    onWatchDetail={function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}}
-                                    onCurrent={function(idx:number,cur:boolean){return onCurrent(idx,cur)}}
-                                    onFloat={function(idx:number,float:boolean){return onFloat(idx,float)}}
-                                    onMaximize={function(idx:number,max:boolean){return onMaximize(idx,max)}}
-                                    slot={value}
-                                    onListEvent=
-                                    {function(slot:string){
-                                        props.onAnnounce(`<${slot}> 해제완료`,"유니크");
-                                        return setSlots(["UNEQUIP",slot]);
-                                        }
-                                    }
-                                    ></ItemSlot>}
-                                    </div>
-                                    <ItemSlot 
-                                    isMaximize={value.isMaxmize}
-                                    isFloat={value.isFloat}
-                                    onWatchDetail={function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}}
-                                    onCurrent={function(idx:number,cur:boolean){return onCurrent(idx,cur)}}
-                                    onFloat={function(idx:number,float:boolean){return onFloat(idx,float)}}
-                                    onMaximize={function(idx:number,max:boolean){return onMaximize(idx,max)}}
-                                    slot={value}
-                                    onListEvent=
-                                    {function(slot:string){
-                                        props.onAnnounce(`<${slot}> 해제완료`,"유니크");
-                                        return setSlots(["UNEQUIP",slot]);
-                                        }
-                                    }
-                                    ></ItemSlot>
-                                    <h2>능력치</h2>
-                                    <ItemResult slot={value}></ItemResult>
-                                    </div>
-                                )
-                        )
-            }
-            <h1>아이템 상세보기</h1>
-            <ItemDetaiView target={detailTarget} ></ItemDetaiView>
+    const itemLists=useCallback(()=> 
             <ItemList key={props.name+props.index} data={props.data} 
                 onWatchDetail={
                     function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}
@@ -237,8 +189,60 @@ export interface Islot{
                         return  setSlots(["EQUIP",value,src,info,rarity,slot]);
                     }
                 }>
-            </ItemList>
+            </ItemList>,[props.data]) 
+    return(
+        <div className="itemSetting">
+            <div className="subtitle"><h1>{props.name }{"#"+props.index}</h1></div>  
+            {slots.map(value=>(  
+                            <div className="result" key={value.title+value.idx}>
+                                    <h1>{value.title+(value.idx+1)}</h1>
+                                    <h2>슬롯</h2>
+                                <div className="floatSlots">
+                                    {value.isFloat&&
+                                    <ItemSlot
+                                        isMaximize={value.isMaxmize}
+                                        isFloat={value.isFloat} 
+                                        onWatchDetail={function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}}
+                                        onCurrent={function(idx:number,cur:boolean){return onCurrent(idx,cur)}}
+                                        onFloat={function(idx:number,float:boolean){return onFloat(idx,float)}}
+                                        onMaximize={function(idx:number,max:boolean){return onMaximize(idx,max)}}
+                                        slot={value}
+                                        onListEvent=
+                                            {function(slot:string)
+                                                {
+                                                    props.onAnnounce(`<${slot}> 해제완료`,"유니크");
+                                                    return setSlots(["UNEQUIP",slot]);
+                                                }
+                                            }
+                                    >
+                                    </ItemSlot>}
+                                </div>
+                                <ItemSlot 
+                                    isMaximize={value.isMaxmize}
+                                    isFloat={value.isFloat}
+                                    onWatchDetail={function(name,src,info,rarity,slot){onWatchDetail(name,src,info,rarity,slot)}}
+                                    onCurrent={function(idx:number,cur:boolean){return onCurrent(idx,cur)}}
+                                    onFloat={function(idx:number,float:boolean){return onFloat(idx,float)}}
+                                    onMaximize={function(idx:number,max:boolean){return onMaximize(idx,max)}}
+                                    slot={value}
+                                    onListEvent=
+                                        {
+                                            function(slot:string)
+                                            {
+                                                props.onAnnounce(`<${slot}> 해제완료`,"유니크");
+                                                return setSlots(["UNEQUIP",slot]);
+                                            }
+                                        }
+                                    ></ItemSlot>
+                                    <h2>능력치</h2>
+                                <ItemResult slot={value}></ItemResult>
+                            </div>
+                                )
+                        )
+            }
+            <h1>아이템 상세보기</h1>
+            <ItemDetaiView target={detailTarget} ></ItemDetaiView>
+            {itemLists()}
         </div>
     )
 }
-export default memo(ItemSetting)
