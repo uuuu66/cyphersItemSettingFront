@@ -1,5 +1,5 @@
 
-import { ComponentProps,memo,useCallback,useMemo,useReducer,useState } from "react";
+import { ComponentProps,useCallback,useReducer,useState } from "react";
 import ItemList from "../molecules/items/itemList";
 import ItemSlot from "../molecules/items/itemSlot";
 import ItemResult,{getSlotsAbillities,Iabillities} from"../molecules/items/itemResult";
@@ -49,7 +49,6 @@ export interface Islot{
     result:Iabillities[];
 }
  export default function ItemSetting(props:ComponentProps<any>){
-    const onStateChangeEvent=props.onStateChangeEvent??null;
     const [detailTarget,setDTarget]=useState(new CslotInfo("없음","없음","없음","없음","없음"));
     const defaultSlotParts=new CslotParts();
     console.log("setting");
@@ -64,7 +63,7 @@ export interface Islot{
         result:null,
     }
     const [slots,setSlots]=useReducer(actionSlot,[defaultSlot]);
-   
+  
     function actionSlot(slots,action){
         let newSlots:Islot[]=[...slots];
         
@@ -117,7 +116,7 @@ export interface Islot{
         let current=checkCurrent(state);
         
         if(current===null){
-
+            
             return state;
         }   
         const newSlotInfo:CslotInfo={
@@ -203,20 +202,17 @@ export interface Islot{
 
     }
     function sendEquipAlarm(value){
-      
-        checkCurrentIsNull()?
+        (()=>checkCurrent)?
         props.onAnnounce(`<${value}> 장착완료.`,"유니크")
         :
         props.onAnnounce(`<${value}> 장착실패.활성화 슬롯 없음.`,"경고")
-    };
-    function checkCurrentIsNull(){
-        for(const slot of slots){ 
-            if(slot.current===true)
-                return true;
-        }
-        return false;
     }
-    function itemLists(){  
+    
+    const onEquip=(value,src,info,rarity,slot)=>{
+         sendEquipAlarm(value);
+        setSlots(["EQUIP",value,src,info,rarity,slot])
+    }
+    const itemLists=useCallback(()=>{  
     return (<ItemList key={props.name+props.index} data={props.data} 
                 onWatchDetail={
                     function(name,src,info,rarity,slot){
@@ -226,13 +222,9 @@ export interface Islot{
 
                 }
                 onListEvent={
-                    function(value,src,info,rarity,slot)
-                    {   
-                        sendEquipAlarm(value);
-                        setSlots(["EQUIP",value,src,info,rarity,slot]);
-                    }
+                    onEquip
                 }>
-            </ItemList>)} 
+            </ItemList>)},[slots]); 
     const itemSlots=useCallback(()=>
     slots.map(value=>
         (  
