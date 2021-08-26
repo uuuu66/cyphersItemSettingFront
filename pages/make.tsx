@@ -1,14 +1,14 @@
 import { GetStaticProps } from "next";
 import { getCharList,getItemList } from "../lib/data"
-import BtnList from '../components/molecules/btnList/btnList'
-import  {useState, MutableRefObject,useRef, useCallback } from 'react';
+import CharacterList from '../components/organisms/characterList'
+import  {useState,  useCallback, useEffect } from 'react';
 import ItemSetting from "../components/organisms/itemSetting";
 import Span from '../components/atoms/span'
-import Button from '../components/atoms/button'
+
 import Loading from '../components/molecules/popup/loading'
 import Announce from '../components/molecules/popup/announce'
 import Wrap from "../components/atoms/wrap";
-interface IactiveSet{
+export interface IactiveSet{
   key:number,
   name:string,
   data:object,
@@ -38,16 +38,18 @@ export const getStaticProps:GetStaticProps =async()=> {
 export default function make({CharList}){
  
     const initialActiveList:IactiveSet[]=[];
-    const [charList,setCharList]=useState(CharList);
+    
     const [ActiveList,setActiveList]=useState(initialActiveList);
-    const [search,setSearch]=useState(null);
     const [isLoading,setLoading]=useState(false);
     const [Announces,setAnnounce]=useState([]);
     const [TimeOut,setTimeOut]=useState(null);
 
-    function makeList(){
+    function makeCharList(){
       return(
-        <BtnList type="character"  data={charList} onListEvent={async function(value){      
+        <CharacterList 
+        type="character"  
+        data={CharList} 
+        onListEvent={async function(value){      
           setLoading(true);
           await getItemList(value).then(
             data=>{
@@ -58,12 +60,11 @@ export default function make({CharList}){
                 scrollY:null,
               }
               setLoading(false);
-              return setActiveList([...ActiveList, newActive]); 
+              return setActiveList([...ActiveList,newActive]); 
             }
-          ).catch(err=>{
-
-          })
-      }}></BtnList>
+          )
+      }}>
+        </CharacterList>
       )
     }
     function forceLoading(boolean:boolean,time:number){
@@ -73,26 +74,18 @@ export default function make({CharList}){
    
      function announceThings(text,rarity="유니크",basicAnnounce=Announces){
       let announce=[...basicAnnounce,{text:text,rarity:rarity}];
-        setAnnounce(announce);
-      if(announce.length<=1){
-        return setAnnounceSplice(announce)
-      }else if(announce.length<3){
-        return setAnnounceEmpty()
-      }else{
-        announce=[];
-        setAnnounce([...announce])
-        return announceThings(text,rarity,announce);
-      }
-    }
-    function setAnnounceSplice(announce){
-    setTimeOut(setTimeout(()=>{setAnnounce(announce.splice(0,0))},2000));
+      setAnnounce(announce);  
     }
     function setAnnounceEmpty(){
       setTimeOut(clearTimeout(TimeOut));
-      setTimeOut(setTimeout(()=>{setAnnounce([])},2000));
+      setAnnounce([])
     }
+    useEffect(function(){  
+      if(Announces.length>1){
+      setAnnounceEmpty();
+      }
+    },[Announces])
   const itemSettings=useCallback(()=>{  
-    console.log("called");
     return   ActiveList.map((value,index)=>(
      <ItemSetting
          data={value.data} 
@@ -118,7 +111,7 @@ export default function make({CharList}){
         {itemSettings()}
           <Wrap type="announce">
             <div className="announce">
-              {Announces.length>0&&Announces.map((value,i)=>(<Announce key={value+i} announces={value}></Announce>))}
+              {Announces.length>0&&Announces.map((value,i)=>(<Announce key={value+i} announces={value} onCancle={function(){setAnnounceEmpty()}}></Announce>))}
             </div>   
           </Wrap>    
            {isLoading&&<Loading/>}
@@ -127,7 +120,7 @@ export default function make({CharList}){
               <Span rarity="언커먼"><Span rarity="레어">터치</Span> : 선택하기</Span>
               <br></br>
             </div>
-            {charList[0]=="error"?<div>error</div>: makeList()}
+            {CharList[0]=="error"?<div>error <br/>서버문제이거나 당신이 문제이거나 개발자에게 연락주세용 ~★</div>: makeCharList()}
           </div>
       </div>
     )

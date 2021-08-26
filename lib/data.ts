@@ -40,44 +40,47 @@ const getItemList=async(character:string)=>{
       return;
    }
 }
-const searchStrProcess=(word:string,value:string)=>{
-  
-      if(word.length==1){
-         if(cho(word)===cho(value)){
+const searchDatas=(searchWord:string,compareTarget:string,type:string)=>{
+   let result=false;   
+   searchWord=searchWord.trim();
+   result=type==="character"?processSearchCharacter(searchWord,compareTarget):processSearchItem(searchWord,compareTarget);      
+   return result;
+}
+function processSearchCharacter(searchWord:string,compareTarget:string){
+   if(searchWord.length>=1){
+      if(compareTarget.startsWith(searchWord))
             return true;
-         
-         }else if(cho(value[0]).startsWith(cho(word[0])))
-            return true;   
-      }
-      if(word.length>1){
-         if(cho(word)===cho(value)){
+      if(extractChosung(searchWord)===extractChosung(compareTarget))
             return true;
-         
-         }else if(cho(value).startsWith(cho(word)))
+      if(extractChosung(compareTarget).startsWith(extractChosung(searchWord)))
             return true;   
-      }
-   
+         }
    return false;
 }
-function cho(word :string){
+function processSearchItem(searchWord:string,compareTarget:string){
+   return false;
+}
+function extractChosung(word :string){
    const unicode=44032
-   var check_num = /[0-9]/; // 숫자 
    var check_eng = /[a-zA-Z]/; // 문자 
-   var check_spc = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 
-   var check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글체크
    let result:string="";
    for(let char of word){
       if(check_eng.test(char)){
          char=char.toLowerCase();
-         var toKor={"a":"ㅇ","b":"ㅂ","c":"ㄲ","d":"ㄷ","e":"ㅇ","f":"ㅍ","g":"ㄱ","h":"ㅎ","i":"ㅇ","j":"ㅈ","k":"ㅋ","l":"ㄹ","m":"ㅁ","n":"ㄴ","o":"ㅇ","p":"ㅍ","q":"ㅋ","r":"ㄹ","s":"ㅅ","t":"ㅌ","u":"ㅇ","v":"ㅂ","w":"ㅇ","x":"ㅅ","y":"ㅇ","z":"ㅈ"}
+         var toKor={"a":"ㅇ","b":"ㅂ","c":"ㅋ","d":"ㄷ","e":"ㅇ","f":"ㅍ","g":"ㄱ","h":"ㅎ","i":"ㅇ","j":"ㅈ","k":"ㅋ","l":"ㄹ","m":"ㅁ","n":"ㄴ","o":"ㅇ","p":"ㅍ","q":"ㅋ","r":"ㄹ","s":"ㅅ","t":"ㅌ","u":"ㅇ","v":"ㅂ","w":"ㅇ","x":"ㅅ","y":"ㅇ","z":"ㅈ"}
+         
          result+=toKor[char];    
       }else {
          var chos = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
-         if(char=='ㄱ')
-            char="ㄲ"
+            if(char=='ㄲ')
+               char="ㅋ"
+            if(char=="까")
+               char="ㅋ"
+              
          result+=chos[Math.floor((char.charCodeAt(0)-unicode)/588)]?chos[Math.floor((char.charCodeAt(0)-unicode)/588)]:char;
+         
       }  
    }
    return result;  
 }
-export {getCharList,getItemList,searchStrProcess};
+export {getCharList,getItemList,searchDatas};

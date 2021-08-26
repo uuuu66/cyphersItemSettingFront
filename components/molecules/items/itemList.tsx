@@ -1,6 +1,7 @@
 import { ComponentProps,memo,useCallback} from "react";
 import BtnList from '../btnList/btnList'
 import Span from '../../atoms/span'
+import StatusBar from '../bars/statusBar'
 export default function itemList(props:ComponentProps<any>){
       
         const itemsObject=Object.values(props.data);
@@ -44,6 +45,7 @@ export default function itemList(props:ComponentProps<any>){
         )
     return(
     <div className="itemList">  
+        <StatusBar></StatusBar>
         <div className="subtitle"><h2>아이템 목록</h2>
             <Span rarity="언커먼"><Span rarity="레어">터치</Span> : 아이템 착용/해제하기</Span>
             <br></br>

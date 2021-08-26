@@ -53,7 +53,7 @@ const itemSlot=(props:ComponentProps<any>)=>{
             }
             onUnEquipEvent={
             function(slot){ 
-                return props.onListEvent(slot);
+                return props.onListEvent(slot,idx);
             }}>     
             </ItemBtn>
 

@@ -13,10 +13,9 @@ export interface Iabillities{
     "부가효과":object;
    
 }
-const Result=({slot}:ComponentProps<any>)=>{
+export default function Result({slot}:ComponentProps<any>){
     
-    const abillities=useMemo(()=>getSlotsAbillities(slot),[slot]);
-    console.log("result");
+    const abillities=getSlotsAbillities(slot)
     const abilNames=Object.keys(abillities[0]); 
     const renderAbills= useCallback((value,i,name)=>{
         return(
@@ -142,4 +141,3 @@ export function getSlotsAbillities(slot:Islot)
         return flag;
     }
 }
-export default memo(Result)

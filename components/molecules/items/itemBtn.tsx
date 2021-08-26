@@ -1,4 +1,4 @@
-import { ComponentProps ,useEffect,useMemo,useState} from "react";
+import { ComponentProps ,useState,} from "react";
 import Name from '../../atoms/name';
 import Icon from '../../atoms/icon';
 import ToolTip from '../../molecules/toolTip/toolTip';
@@ -26,7 +26,8 @@ export default function imgBtn(props:ComponentProps<any>){
     let mouseInterval=null;
     let startTime=0;
     let currentTime=0;
-    const tapTime= 1000;
+    const shortTapTime=1000;
+    const longTapTime= 3000;
     
     const toolBarButtons=makeToolBar();
     const toolBarTitle=originalSlot=="장신구ALL"?"슬롯 선택":null;
@@ -35,10 +36,9 @@ export default function imgBtn(props:ComponentProps<any>){
         buttons:toolBarButtons,
     }:null;
     const [toolBarTimeOut,setToolBarTimeOut]=useState(null);
-   
+
 
     function toolBarOn(){
-        
         setToolBarTimeOut(clearTimeout(toolBarTimeOut));
         const on=On=="ON"?"OFF":"ON";
         setToolBarTimeOut(setTimeout(()=>{setOn("OFF")},3000));
@@ -59,7 +59,8 @@ export default function imgBtn(props:ComponentProps<any>){
         }
         return Buttons;    
     }   
-    function mouseCapture(){
+    function mouseCapture(e){
+        
         startTime=Date.now();
         if(mouseFlag!=false)
             return;
@@ -69,8 +70,7 @@ export default function imgBtn(props:ComponentProps<any>){
     function howLongMouseTap(){
         currentTime=Date.now();
         const howLongTime=currentTime-startTime;
-        
-        howLongTime>tapTime?longTap():function(){return null};
+        howLongTime>longTapTime?longTap():function(){return null};
     }
     function mouseUp(){ 
         if(mouseFlag==false){
@@ -80,7 +80,9 @@ export default function imgBtn(props:ComponentProps<any>){
         }    
     }
     function shortTap(){
-        return originalSlot=="장신구ALL"?toolBarOn():makeEquipUnEquip();
+        currentTime=Date.now();
+        const howLongTime=currentTime-startTime;
+        return  howLongTime<shortTapTime?originalSlot=="장신구ALL"?toolBarOn():makeEquipUnEquip():null;   
     }
     function longTap(){
         return seeDetail();
@@ -106,9 +108,9 @@ export default function imgBtn(props:ComponentProps<any>){
         <ToolTip info={info} type={type} name={name} rarity={rarity} >    
             <div className={type} 
             onClick={function(e){e.preventDefault();} }
-            onMouseDown={()=>{mouseCapture()}}
+            onMouseDown={(e)=>{mouseCapture(e)}}
             onMouseUp={(e)=>{e.preventDefault();mouseUp()}}
-            onTouchStart={()=>{mouseCapture()}}
+            onTouchStart={(e)=>{mouseCapture(e)}}
             onTouchEnd={(e)=>{e.preventDefault();mouseUp()}}
             onTouchCancelCapture={(e)=>{e.preventDefault(); return;}}
             >
@@ -117,6 +119,7 @@ export default function imgBtn(props:ComponentProps<any>){
             </div> 
             {toolBar&&<ToolBar on={On} title={toolBar.title} buttons={toolBar.buttons}/>
             }
+            
         </ToolTip>
        
     )

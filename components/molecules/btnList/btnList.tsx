@@ -1,22 +1,19 @@
-import { ComponentProps,useCallback,useState,useRef,MutableRefObject } from "react";
+import { ComponentProps,useCallback,useState } from "react";
 import ItemBtn from '../items/itemBtn'
-import {searchStrProcess} from '../../../lib/data';
+import {searchDatas} from '../../../lib/data';
 import List from '../list/list';
-import Span from '../../atoms/span';
-import Button from '../../atoms/button'
 export default function BtnList(props:ComponentProps<any>){
     
     const items=props.data;
-    const [search,setSearch]=useState(null);
+    const search=props.search;
     const [listType,setListType]=useState(props.type); 
-    const inputRef:MutableRefObject<any>=useRef();
     const Content=useCallback(()=>items.map(
-                    value=>{
+                    value=>{ 
                                 if(search!=null){
-                                        if(!searchStrProcess(search,value.name)){   
-                                            console.log(search,value.name);
+                                    
+                                        if(!searchDatas(search,value.name,listType)){   
                                             return ;
-                                        }    
+                                        }  
                                 }
                             return <ItemBtn type={listType} 
                             code={value.code?value.code:"https://img-api.neople.co.kr/cy/items/"+value.itemId} 
@@ -40,12 +37,6 @@ export default function BtnList(props:ComponentProps<any>){
                 }),[search])
     return(
        <List>
-            <h2>캐릭터 검색</h2>
-            <Span rarity="레어">영어는 초성만 됨.사유:귀찮아서 </Span>
-            <Button onClick={function(){setSearch(null); inputRef.current.value=" "}}>검색 초기화</Button>
-            <div id="inputDiv">
-              <input ref={inputRef} id="charSearch" onChange={function(e){setSearch(e.target.value)}}></input>
-            </div> 
            {Content()}
        </List>
     )
