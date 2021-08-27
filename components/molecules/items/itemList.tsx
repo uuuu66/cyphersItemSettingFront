@@ -1,9 +1,9 @@
 import { ComponentProps,memo,useCallback} from "react";
 import BtnList from '../btnList/btnList'
 import Span from '../../atoms/span'
-import StatusBar from '../bars/statusBar'
-export default function itemList(props:ComponentProps<any>){
-      
+
+export default function ItemList(props:ComponentProps<any>){
+        
         const itemsObject=Object.values(props.data);
         let keys=Object.keys(props.data);
         keys[1]="공통";
@@ -29,9 +29,9 @@ export default function itemList(props:ComponentProps<any>){
                                                 }
                                             }
                                             onListEvent=
-                                            {function(value,src,info,rarity,slot,ready)
+                                            {function(value,src,info,rarity,slot)
                                                 {
-                                                return props.onListEvent(value,src,info,rarity,slot,ready);
+                                                return props.onListEvent(value,src,info,rarity,slot);
                                                 }
                                             }>
                                                 
@@ -45,7 +45,7 @@ export default function itemList(props:ComponentProps<any>){
         )
     return(
     <div className="itemList">  
-        <StatusBar></StatusBar>
+        
         <div className="subtitle"><h2>아이템 목록</h2>
             <Span rarity="언커먼"><Span rarity="레어">터치</Span> : 아이템 착용/해제하기</Span>
             <br></br>

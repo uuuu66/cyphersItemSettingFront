@@ -4,7 +4,7 @@ import axios, { AxiosAdapter, AxiosResponse } from 'axios';
 const  getCharList=async()=>{
    let res:AxiosResponse<any>=null;
    try{
-  res=await axios.get('https://api.neople.co.kr/cy/characters?apikey=dagxFMoUoEfELDjmBOVVO2vkf6aoELx7');
+  res=await axios.get('https://api.neople.co.kr/cy/characters?apikey=dagxFMoUoEfELDjmBOVVO2vkf6aoELx7',{withCredentials:true});
    }catch(err){
       return ("error");
    }
@@ -21,7 +21,7 @@ const  getCharList=async()=>{
 const getItemList=async(character:string)=>{
    try{
       
-      const res:AxiosResponse<any>=await axios.post('/api/getItemList',{character:character});
+      const res:AxiosResponse<any>=await axios.post('/api/getItemList',{character:character},{withCredentials:true});
       const data=res.data.data;
       const code=res.data.code;
       let result={};

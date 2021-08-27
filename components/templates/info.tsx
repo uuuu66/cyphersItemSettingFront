@@ -51,7 +51,7 @@ function Help2(){
     </>);
 }
 
-export default function info(){
+export default function Info(){
     return (
         <aside>
             <details>

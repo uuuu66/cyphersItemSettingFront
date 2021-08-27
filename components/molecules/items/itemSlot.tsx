@@ -8,7 +8,7 @@ import { Iabillities } from "./itemResult";
 
 
 
-const itemSlot=(props:ComponentProps<any>)=>{
+const ItemSlot=(props:ComponentProps<any>)=>{
     const title=props.slot.title+(props.slot.idx+1);
     const idx=props.slot.idx;
     const isMaximize=props.isMaximize?"Max":"Mini"; 
@@ -192,4 +192,4 @@ const itemSlot=(props:ComponentProps<any>)=>{
        </>
     )
 }
-export default  memo(itemSlot);
+export default  memo(ItemSlot);

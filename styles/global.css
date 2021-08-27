@@ -2,10 +2,11 @@ div {
   max-width: 450px;
   word-break: break-all;
 }
-img#footerImg {
+div#footerImg {
   width: 100%;
   position: relative;
   bottom: 0%;
+  height: 150px;
   border: solid black 2px;
 }
 footer {
@@ -208,6 +209,10 @@ nav {
   background-color: black;
   text-align: center;
 }
+div.icon {
+  z-index: 0;
+  position: relative;
+}
 div.itemicon div.icon {
   width: inherit;
   display: flex;
@@ -215,7 +220,7 @@ div.itemicon div.icon {
   justify-content: center;
   align-items: center;
 }
-div.itemicon div.icon img {
+div.itemicon div.icon div {
   width: inherit;
 
   display: block;
@@ -228,13 +233,13 @@ div.item .div.icon {
   align-items: center;
 }
 
-div.item div.icon img {
+div.item div.icon div {
   width: 40px;
 }
 div.itemDetailView div.icon {
   width: 100%;
 }
-div.itemDetailView div.icon img {
+div.itemDetailView div.icon div {
   display: inline-block;
   width: 250px;
   height: 250px;
@@ -300,12 +305,14 @@ h2 {
   transition: transform 1s;
   display: none;
   font-size: 10px;
+  z-index: 300;
 }
 .toolTip .itemI {
   background-color: black;
   position: absolute;
   display: none;
   font-size: 10px;
+  z-index: 300;
 }
 .toolTip .itemiconI {
   background-color: black;
@@ -313,6 +320,7 @@ h2 {
   position: absolute;
   display: none;
   font-size: 10px;
+  z-index: 300;
 }
 
 /* .toolTip:visited .characterI {
@@ -363,10 +371,26 @@ button.normal {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: ivory;
 }
-.loading {
+.loadingtrue {
   z-index: 1000;
   position: fixed;
   display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  align-items: center;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.loadingfalse {
+  z-index: 1000;
+  position: fixed;
+  display: none;
   flex-wrap: wrap;
 
   justify-content: center;
@@ -562,7 +586,7 @@ td {
   color: white;
   animation: forwards 0.5s moveup;
 
-  margin-bottom: 2px;
+  margin-right: 2px;
   z-index: 300;
 }
 @keyframes moveup {
@@ -571,7 +595,7 @@ td {
   }
   100% {
     opacity: 1;
-    transform: translateX(2.5px) translateY(-227px);
+    transform: translateX(2.5px) translateY(-2px);
   }
 }
 .toolBarON .divButton {
@@ -580,14 +604,13 @@ td {
   width: 40px;
   height: 40px;
   line-height: 40px;
-  background-color: rgb(13, 194, 22);
+  background-color: rgb(241, 252, 216);
   color: black;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   border-radius: 15%;
 }
 .toolBarON .space {
   font-size: 10px;
-
   width: 100%;
 }
 .toolBarOFF {
@@ -681,12 +704,12 @@ div.sideEffect {
   position: fixed;
   z-index: 300;
 }
-img.imgButton {
+div.imgButton {
   width: 40px;
   height: 40px;
   display: inline-block;
 }
-img.imgButton:active {
+div.imgButton:active {
   width: 35px;
   height: 35px;
 }

@@ -2,7 +2,7 @@ import { ComponentProps,useRef,MutableRefObject,useState } from "react";
 import BtnList from "../molecules/btnList/btnList"
 import Span from '../atoms/span';
 import Button from '../atoms/button'
-export default function characterList({type,data,onListEvent}:ComponentProps<any>){
+export default function CharacterList({type,data,onListEvent}:ComponentProps<any>){
     const inputRef:MutableRefObject<any>=useRef();
     const [search,setSearch]=useState(null);
     

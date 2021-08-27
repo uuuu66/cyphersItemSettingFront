@@ -1,4 +1,4 @@
-import { ComponentProps ,useState,} from "react";
+import { ComponentProps ,useEffect,useState,} from "react";
 import Name from '../../atoms/name';
 import Icon from '../../atoms/icon';
 import ToolTip from '../../molecules/toolTip/toolTip';
@@ -8,7 +8,7 @@ export interface ItoolBar{
     title:string;
     buttons:any[];
 }
-export default function imgBtn(props:ComponentProps<any>){
+export default function ItemBtn(props:ComponentProps<any>){
     const onBtnEvent=props.onBtnEvent??null;
     const onWatchDetail=props.onWatchDetail??null;
     const onUnEquipEvent=props.onUnEquipEvent??null;
@@ -39,14 +39,16 @@ export default function imgBtn(props:ComponentProps<any>){
 
 
     function toolBarOn(){
-        setToolBarTimeOut(clearTimeout(toolBarTimeOut));
+        clearTimeout(toolBarTimeOut);
+        setToolBarTimeOut(null);
         const on=On=="ON"?"OFF":"ON";
-        setToolBarTimeOut(setTimeout(()=>{setOn("OFF")},3000));
+        setToolBarTimeOut(setTimeout(()=>{setOn("OFF")},4500));
         mouseFlag=false;
         startTime=0; 
         clearInterval(mouseInterval);
         return setOn(on);
     }
+    useEffect(function(){return clearTimeout(toolBarTimeOut)})
     function makeToolBar(){
         
         const Buttons=originalSlot==="장신구ALL"?makeButtons():null;
@@ -55,7 +57,7 @@ export default function imgBtn(props:ComponentProps<any>){
     function makeButtons(){
         const Buttons=[]
         for(let i=1;i<5;i++){
-            Buttons.push(<DivButton key={name+originalSlot+i} onBtnClick={async function(){makeEquipUnEquip(`장신구${i}`),toolBarOn();} }>{`${i}`}</DivButton>);
+            Buttons.push(<DivButton key={name+originalSlot+i} onBtnClick={ function(){makeEquipUnEquip(`장신구${i}`),toolBarOn();} }>{`${i}`}</DivButton>);
         }
         return Buttons;    
     }   
@@ -114,7 +116,7 @@ export default function imgBtn(props:ComponentProps<any>){
             onTouchEnd={(e)=>{e.preventDefault();mouseUp()}}
             onTouchCancelCapture={(e)=>{e.preventDefault(); return;}}
             >
-            <Icon src={src} alt={name} ></Icon>
+            <Icon src={src} type={type} alt={name} ></Icon>
             {type!="itemicon"&&<Name name={name} rarity={rarity}></Name>}
             </div> 
             {toolBar&&<ToolBar on={On} title={toolBar.title} buttons={toolBar.buttons}/>

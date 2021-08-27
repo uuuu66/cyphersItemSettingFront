@@ -1,6 +1,6 @@
 import Span from '../atoms/span'
 
-export default function aside(){
+export default function Aside(){
    
     return(
         <aside>

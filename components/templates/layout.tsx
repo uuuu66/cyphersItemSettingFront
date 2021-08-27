@@ -2,7 +2,7 @@ import {ReactNode,useState} from "react";
 import Nav from './nav';
 
 
-export default function layout({children}:{children:ReactNode}){
+export default function Layout({children}:{children:ReactNode}){
     const [menuState,setMenuState]=useState({index:0,text:"메뉴"});
     const [navList,setNavList]=useState([{index:0,href:"/",title:"home"},{index:1,href:"/make",title:"아이템 세트 만들기 "}])
     const menuStatus =(e)=>{

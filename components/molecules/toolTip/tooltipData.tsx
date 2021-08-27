@@ -1,6 +1,6 @@
 import { ComponentProps, useState } from "react";
 import Span from '../../atoms/span'
-export default function itemDetail(props:ComponentProps<any>){
+export default function ItemDetail(props:ComponentProps<any>){
     const type=props.type??"character";
     const info=props.children; 
     let Content=type!="character"?[<Span key={props.name} rarity={props.rarity}>[{props.name}]</Span>]:[];

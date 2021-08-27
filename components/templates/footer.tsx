@@ -1,9 +1,10 @@
+import Image from 'next/image'
 
-
-export default function footer(){
+export default function Footer(){
     return(<footer>
-        <a href="http://developers.neople.co.kr" target="_blank">
-        <img id="footerImg" src="cypherslog.png" alt="Neople 오픈 API" / > </a>
+        <div id="footerImg" >
+            <Image layout="fill" src="/cypherslog.png" onClick={function(){window.open('http://developers.neople.co.kr',"_blank")}}  alt="Neople 오픈 API" ></Image> 
+        </div>
         </footer>
     )
 }

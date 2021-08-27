@@ -1,5 +1,5 @@
 
-import { ComponentProps,useCallback,useReducer,useState } from "react";
+import { ComponentProps,useCallback,useEffect,useReducer,useState } from "react";
 import ItemList from "../molecules/items/itemList";
 import ItemSlot from "../molecules/items/itemSlot";
 import ItemResult,{getSlotsAbillities,Iabillities} from"../molecules/items/itemResult";
@@ -73,7 +73,11 @@ export interface Islot{
         }
         if(action[0]==="DELETE")
         {
-
+            deleteSlot(newSlots,action[1]);
+        }
+        if(action[0]==="RESET")
+        {
+            resetSlot(newSlots,action[1]);
         }
         if(action[0]==="EQUIP")
         {   
@@ -103,8 +107,22 @@ export interface Islot{
                 return slot;   
         }
     }
+    function deleteSlot(state:Islot[],idx:number){
+        state.splice(idx,1)
+        if(state.length==0)
+            createSlot(state);
+        return state
+    }
+    function resetSlot(state:Islot[],idx:number){
+        const slot=selectSlot(state,idx);
+        const slotNames=Object.keys(slot.items);
+        for(const name of slotNames){
+            slot.items[name]=null;
+        }
+        return state;
+    }
     function checkCurrent(state:Islot[]){
-        
+       
         for(const currentSlot of state){
            if(currentSlot.current==true)
                 return currentSlot;
@@ -116,8 +134,8 @@ export interface Islot{
         let current=checkCurrent(state);
         
         if(current===null){
-            
-            return state;
+            setCurrent(state,0,false);
+            current=selectSlot(state,0);
         }   
         const newSlotInfo:CslotInfo={
             name:value,
@@ -127,6 +145,7 @@ export interface Islot{
             part:slot,        
         }
         current.items[slot]=newSlotInfo;
+     
         return state;
     }
     function unEquipItem(state:Islot[],slot,idx){ 
@@ -192,8 +211,8 @@ export interface Islot{
         props.onAnnounce(`생성완료.`,"언커먼");
         return setSlots(["CREATE"]);
     }
-    function onDelete(){
-
+    function onDelete(idx:number){
+        return setSlots(["DELETE",idx]);
     }
     function onSave(){
 
@@ -201,29 +220,23 @@ export interface Islot{
     function onLoad(){
 
     }
-    function sendEquipAlarm(value){
-        (()=>checkCurrent)?
-        props.onAnnounce(`<${value}> 장착완료.`,"유니크")
-        :
-        props.onAnnounce(`<${value}> 장착실패.활성화 슬롯 없음.`,"경고")
+    function onReset(idx:number){
+        return setSlots(["RESET",idx])
     }
-    
-    const onEquip=(value,src,info,rarity,slot)=>{
-         sendEquipAlarm(value);
-        setSlots(["EQUIP",value,src,info,rarity,slot])
+    const onEquip=(value,src,info,rarity,slot)=>
+    {
+        props.onAnnounce(`<${value}> 장착완료.`,"유니크")
+        setSlots(["EQUIP",value,src,info,rarity,slot]);
     }
     const itemLists=useCallback(()=>{  
-    return (<ItemList key={props.name+props.index} data={props.data} 
+    return (<ItemList key={props.name+props.index} data={props.data} checkCurrent={checkCurrent(slots)}
                 onWatchDetail={
                     function(name,src,info,rarity,slot){
                         props.onAnnounce(`<${name}> 상세보기.`,"언커먼")
                         onWatchDetail(name,src,info,rarity,slot)
                     }
-
                 }
-                onListEvent={
-                    onEquip
-                }>
+                onListEvent={onEquip}>
             </ItemList>)},[slots]); 
     const itemSlots=useCallback(()=>
     slots.map(value=>
@@ -233,7 +246,8 @@ export interface Islot{
                     <StatusBar title="">
                         <ItemMenuButtons 
                         onCreate={onCreate}
-                        onDelete={onDelete}
+                        onDelete={()=>onDelete(value.idx)}
+                        onReset={()=>onReset(value.idx)}
                         onSave={onSave}
                         onLoad={onLoad}>
                         </ItemMenuButtons>
