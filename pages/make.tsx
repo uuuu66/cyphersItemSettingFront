@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { getCharList,getItemList } from "../lib/data"
 import CharacterList from '../components/organisms/characterList'
-import {useState,  useCallback} from 'react';
+import {useState,  useCallback, useReducer} from 'react';
 import ItemSetting from "../components/organisms/itemSetting";
 import Span from '../components/atoms/span'
 import Loading from '../components/molecules/popup/loading'
@@ -37,7 +37,7 @@ export const getStaticProps:GetStaticProps =async()=> {
 export default function Make({CharList}){
  
     const initialActiveList:IactiveSet[]=[];
-    const [ActiveList,setActiveList]=useState(initialActiveList);
+    const [ActiveList,setActiveList]=useReducer(dispatchList,initialActiveList);
     const [isLoading,setLoading]=useState(false);
     const [Announces,setAnnounce]=useState([]);
     
@@ -45,7 +45,7 @@ export default function Make({CharList}){
       setLoading(boolean);
       setTimeout(()=>{setLoading(!boolean);},time)
     }
-     function announceThings(text,rarity="유니크",basicAnnounce=Announces){
+    function announceThings(text,rarity="유니크",basicAnnounce=Announces){
        setAnnounceEmpty();
       let announce=[...basicAnnounce,{text:text,rarity:rarity}];
       setAnnounce(announce);  
@@ -53,9 +53,20 @@ export default function Make({CharList}){
     function setAnnounceEmpty(){
       setAnnounce([])
     }
-    async function onCreate(value){
+    function dispatchList(state:IactiveSet[],action){
+      const idx=action.idx||null;
+      const order=action.order||null;
+      const list=action.list||null;
+      let newState:IactiveSet[]=[];
+      if(order==="CREATE"){
+        newState= [...state,list];
+      }
+      return newState;
+    }
+     async function onCreate(value){
+      
       setLoading(true);
-      await getItemList(value).then(
+       await getItemList(value).then(
         data=>{
           let newActive:IactiveSet={
             key:Date.now(),
@@ -64,9 +75,9 @@ export default function Make({CharList}){
             scrollY:null,
           }
           setLoading(false);
-          setActiveList([...ActiveList,newActive]); 
+         return setActiveList({order:"CREATE",list:newActive})
         } 
-      )
+      ).catch(err=>console.log(err));
     }
   const itemSettings=useCallback(()=>{  
     return   ActiveList.map((value,index)=>(

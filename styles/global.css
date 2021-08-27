@@ -141,6 +141,7 @@ div#s3ImgDiv {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 #s3 {
   width: 20%;

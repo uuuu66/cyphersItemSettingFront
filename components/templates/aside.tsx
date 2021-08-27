@@ -14,7 +14,7 @@ export default function Aside(){
                                 <summary>
                                     하고싶은 말
                                 </summary>
-                                <p>" 사퍼야 아프지마. "</p>
+                                <p>"사퍼야 아프지마."</p>
                             </details>
                         
                         </li>
@@ -25,7 +25,7 @@ export default function Aside(){
                                 <li>메일</li> 
                                 <a >leeminki0428@gmail.com</a>
                                 <li>개인 블로그</li> 
-                                <a href="https://mlog.cf" target='_blank'>https://mlog.cf</a>
+                                <a href="https://mlog.cf" rel="noreferrer" target='_blank'>https://mlog.cf</a>
                             </ul>
                         </li>
                         <Span rarity="hidden">난 숨겨져 잇지롱 헤헤</Span>
