@@ -16,7 +16,8 @@ export default function BtnList(props:ComponentProps<any>){
                                         }  
                                 }
                             return <ItemBtn type={listType} 
-                            code={value.code?value.code:"https://img-api.neople.co.kr/cy/items/"+value.itemId} 
+                            src={value.code?value.code:"https://img-api.neople.co.kr/cy/items/"+value.itemId} 
+                            code={value.itemId}
                             data-name={value.name?value.name:value.itemName} 
                             name={value.name?value.name:value.itemName} 
                             key={value.name?value.name:value.itemName} 
@@ -29,8 +30,8 @@ export default function BtnList(props:ComponentProps<any>){
                                 }
                             }
                             onBtnEvent={
-                                function(value,src,info,rarity,slot,ready){ 
-                                    return props.onListEvent(value,src,info,rarity,slot,ready);
+                                function(value,src,info,rarity,slot,code){ 
+                                    return props.onListEvent(value,src,info,rarity,slot,code);
                                 }
                             }>
                         </ItemBtn>  

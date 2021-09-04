@@ -1,9 +1,11 @@
 import { ComponentProps ,useEffect,useState,} from "react";
+
 import Name from '../../atoms/name';
 import Icon from '../../atoms/icon';
 import ToolTip from '../../molecules/toolTip/toolTip';
 import DivButton from "../../atoms/divButton";
 import ToolBar from "../../molecules/bars/toolBar"
+
 export interface ItoolBar{
     title:string;
     buttons:any[];
@@ -12,13 +14,13 @@ export default function ItemBtn(props:ComponentProps<any>){
     const onBtnEvent=props.onBtnEvent??null;
     const onWatchDetail=props.onWatchDetail??null;
     const onUnEquipEvent=props.onUnEquipEvent??null;
-    const src=props.code??null;
+    const src=props.src??null;
+    const code=props.code??null;
     const name=props.name;
     const type=props.type;
     const info=props.info;
     const rarity=props.rarity??"커먼";
     const originalSlot=props.slot;
-    const ready=false;
     const[slot,setSlot]=useState(props.slot);
     const[On,setOn]=useState("OFF");
     
@@ -26,7 +28,7 @@ export default function ItemBtn(props:ComponentProps<any>){
     let mouseInterval=null;
     let startTime=0;
     let currentTime=0;
-    const shortTapTime=1000;
+    const shortTapTime=500;
     const longTapTime= 3000;
     
     const toolBarButtons=makeToolBar();
@@ -36,7 +38,7 @@ export default function ItemBtn(props:ComponentProps<any>){
         buttons:toolBarButtons,
     }:null;
     const [toolBarTimeOut,setToolBarTimeOut]=useState(null);
-
+    
 
     function toolBarOn(){
         clearTimeout(toolBarTimeOut);
@@ -61,8 +63,7 @@ export default function ItemBtn(props:ComponentProps<any>){
         }
         return Buttons;    
     }   
-    function mouseCapture(e){
-        
+    function mouseCapture(){
         startTime=Date.now();
         if(mouseFlag!=false)
             return;
@@ -70,59 +71,69 @@ export default function ItemBtn(props:ComponentProps<any>){
         mouseInterval= setInterval(()=>howLongMouseTap(),20);       
     } 
     function howLongMouseTap(){
+        if(mouseFlag==false)
+         return clearInterval(mouseInterval) ;
         currentTime=Date.now();
         const howLongTime=currentTime-startTime;
-        howLongTime>longTapTime?longTap():function(){return null};
+        howLongTime>longTapTime?seeDetail():function(){return mouseFlag=false;};
     }
-    function mouseUp(){ 
+    function mouseUp(){
         if(mouseFlag==false){
-            clearInterval(mouseInterval);
+            clearInterval(mouseInterval)
+          return  longTap();
         }else{        
-            shortTap();
+           
+          return  shortTap();
         }    
+        
     }
     function shortTap(){
         currentTime=Date.now();
+        clearInterval(mouseInterval);
         const howLongTime=currentTime-startTime;
+        mouseFlag=false;
         return  howLongTime<shortTapTime?originalSlot=="장신구ALL"?toolBarOn():makeEquipUnEquip():null;   
     }
     function longTap(){
+        clearInterval(mouseInterval);
+        if(mouseFlag===false)
+            return null;
         return seeDetail();
     }
     function makeEquipUnEquip(slot=originalSlot){
         if(slot=="장신구ALL")
             return;
-        onBtnEvent?onBtnEvent(name,src,info,rarity,slot,ready):onUnEquipEvent(slot);
+        onBtnEvent?onBtnEvent(name,src,info,rarity,slot,code):onUnEquipEvent(slot);
         mouseFlag=false;
         startTime=0; 
         return clearInterval(mouseInterval);
     }
     function seeDetail(){
-        type!="character"?onWatchDetail(name,src,info,rarity,slot):null;
+         clearInterval(mouseInterval);  
         mouseFlag=false;
         startTime=0; 
-        return clearInterval(mouseInterval);  
+        return type!="character"?onWatchDetail(name,src,info,rarity,slot):null;
     }
 
   
     return(
- 
         <ToolTip info={info} type={type} name={name} rarity={rarity} >    
             <div className={type} 
-            onClick={function(e){e.preventDefault();} }
-            onMouseDown={(e)=>{mouseCapture(e)}}
-            onMouseUp={(e)=>{e.preventDefault();mouseUp()}}
-            onTouchStart={(e)=>{mouseCapture(e)}}
+            onTouchStart={(e)=>{e.stopPropagation();mouseCapture()}}
             onTouchEnd={(e)=>{e.preventDefault();mouseUp()}}
-            onTouchCancelCapture={(e)=>{e.preventDefault(); return;}}
+          
+            onMouseDown={(e)=>{e.stopPropagation();mouseCapture()}}
+            onMouseUp={(e)=>{e.preventDefault();mouseUp()}}
+         
             >
             <Icon src={src} type={type} alt={name} ></Icon>
             {type!="itemicon"&&<Name name={name} rarity={rarity}></Name>}
             </div> 
-            {toolBar&&<ToolBar on={On} title={toolBar.title} buttons={toolBar.buttons}/>
-            }
-            
+            {toolBar&&<ToolBar onToolBarOFF={toolBarOn} on={On} title={toolBar.title} buttons={toolBar.buttons}>
+            {toolBar.buttons.map(value=>(value))}
+            </ToolBar>
+            }        
         </ToolTip>
-       
+      
     )
 }

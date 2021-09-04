@@ -1,42 +1,35 @@
-import { ComponentProps,useEffect,useState } from "react";
-import DivButton from "../../atoms/divButton";
+
 import ImgButton from "../../atoms/imgButton";
-import ToolBar from "../bars/toolBar"
-export default function ItemMenuButtons({onCreate,onDelete,onSave,onLoad,onReset}:ComponentProps<any>){
-            const[On,setOn]=useState("OFF");
-            const [toolBarTimeOut,setToolBarTimeOut]=useState(null);
-            const toolBar={
-                title:"삭제 버튼",
-                buttons:[<DivButton key="delete" onBtnClick={function(){onDelete();setOn("OFF")}}>삭제</DivButton>,
-                        <DivButton key="reset" onBtnClick={function(){onReset();setOn("OFF")}}>리셋</DivButton> ,
-                        <DivButton key="cancle" onBtnClick={function(){setOn("OFF")}}>취소</DivButton>   
-                        ]
-                }
-                function toolBarOn(){
-                    clearTimeout(toolBarTimeOut)
-                    setToolBarTimeOut(null)
-                    const on=On=="ON"?"OFF":"ON";
-                    setToolBarTimeOut(setTimeout(()=>{setOn("OFF")},5000));
-                    return setOn(on);
-                }   
-                useEffect(function(){return clearTimeout(toolBarTimeOut)})
+import ToolBarButton from "../toolBarButton/toolBarButton";
+import DivButton from "../../atoms/divButton";
+import Wrap from "../../atoms/wrap"
+import { ComponentProps, RefObject, useRef, useState } from "react";
+import StatusBar from "../bars/statusBar"
+export default function ItemMenuButtons({onCreate,onLoad}:ComponentProps<any>){
+    const [codeInput,setInput]=useState(false);
+    const toolBar={
+        title:"슬롯 생성",
+        buttons:[
+        <DivButton key="create" onBtnClick={onCreate}>새로</DivButton>,
+        <DivButton key="code" onBtnClick={function(){setInput(true)}}>코드</DivButton> ,
+        ]
+    }
+    const codeRef:RefObject<HTMLInputElement>=useRef()
     return(
         <>
-            <ImgButton src="/createBtn.png" onBtnClick={onCreate}>
-               
+        <ToolBarButton title={toolBar.title} buttons={toolBar.buttons} >
+            <ImgButton  src="/createBtn.png">        
             </ImgButton>
-            <ToolBar on={On} title={toolBar.title} buttons={toolBar.buttons}/>
-            <ImgButton src="/deleteBtn.png" onBtnClick={()=>{toolBarOn()}}>
-               
-            </ImgButton>
-          
-            <ImgButton src="/saveBtn.png" onBtnClick={onSave}>
-
-            </ImgButton>
-            <ImgButton src="/loadBtn.png" onBtnClick={onLoad}>
-                
-            </ImgButton>
+        </ToolBarButton>
+        {codeInput&&<Wrap type="opacity">
             
+           
+            <input ref={codeRef} placeholder="이곳에 코드 붙여넣기" className="codeInput"></input>
+            <StatusBar>
+            <ImgButton src="/loadBtn.png" onBtnClick={()=>{setInput(false);onLoad(codeRef.current.value);codeRef.current.value=null;}}></ImgButton>
+            <ImgButton src="/x.png" onBtnClick={()=>{codeRef.current.value=null;setInput(false)}}></ImgButton>
+            </StatusBar>
+        </Wrap>}
         </>
     )
 }

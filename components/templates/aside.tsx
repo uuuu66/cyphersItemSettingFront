@@ -1,5 +1,5 @@
 import Span from '../atoms/span'
-
+import Image from 'next/image'
 export default function Aside(){
    
     return(
@@ -30,7 +30,7 @@ export default function Aside(){
                         </li>
                         <Span rarity="hidden">난 숨겨져 잇지롱 헤헤</Span>
                     </ul>
-                    <div id="s3ImgDiv"><img src="s3.gif" id="s3" alt=" "/> </div>  
+                    <div id="s3ImgDiv"><Image layout="fill" src="/s3.gif" id="s3" alt=" "/> </div>  
                 </div>
                 <summary>개발자 정보</summary>
             </details>

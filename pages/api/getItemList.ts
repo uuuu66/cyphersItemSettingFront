@@ -12,6 +12,7 @@ export default async function hander(req: NextApiRequest, res: NextApiResponse) 
         result.push(itemJson["null"]);
         return res.json({code:"done",data:result});
     }else{
+        console.log("error",req);
         return  res.json({code:"error",data:"no signal"});
     }
    

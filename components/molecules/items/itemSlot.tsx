@@ -20,8 +20,8 @@ const ItemSlot=(props:ComponentProps<any>)=>{
     const result=props.slot.result;
     const contractedTitle=title.length>4?title.substr(0,title.length-3)+"...":title;
     const itemSlots=props.slot.items;
+    const allowFloat=props.allowFloat||"no";
     const slotKeys=Object.keys(itemSlots);
-   
     const Iabillities:Iabillities={
         "공격력":0,
         "치명타":0,
@@ -39,8 +39,9 @@ const ItemSlot=(props:ComponentProps<any>)=>{
         return(
         
             <ItemBtn type="itemicon"
-            code={value.src} 
+            src={value.src} 
             data-name={value.name} 
+            code={props.code}
             name={value.name} 
             key={value.name} 
             rarity={value.rarity}
@@ -58,21 +59,19 @@ const ItemSlot=(props:ComponentProps<any>)=>{
             </ItemBtn>
 
         )
-    }
-    
-   
+    }  
     const minimizeBtn=useCallback(()=>{
         return(
             <DivBtn 
             onBtnClick=
             {function(){
                     onMaximize(idx,props.isMaximize);
-            }}>-</DivBtn>
+            }}>{allowFloat!=="yes"?!props.isMaximize?"□":"-":"-"}</DivBtn>
         )
     },[isMaximize])
     const maximizeBtn=useCallback(()=>{
         return(
-            <DivBtn  
+           <DivBtn  
             onBtnClick=        
             {function(){         
                     onMaximize(idx,props.isMaximize);
@@ -112,7 +111,7 @@ const ItemSlot=(props:ComponentProps<any>)=>{
     const maxmizeSlot=useCallback(()=>{
         return(
             <div className={"itemSlot"+isFloat+isMaximize}>
-                <StatusBar title={title} current={isCurrent}>             
+                <StatusBar type="Slot" title={title} current={isCurrent}>             
                         {buttonOne}
                         {buttonTwo}
                         {buttonThree}
@@ -177,7 +176,7 @@ const ItemSlot=(props:ComponentProps<any>)=>{
     const minimizeSlot=useCallback(()=>{
         return(
             <div className="itemSlotFloatMini">
-                <StatusBar title={contractedTitle} current={isCurrent}>
+                <StatusBar type="Slot" title={contractedTitle} current={isCurrent}>
                     {currentBtn()}
                     {maximizeBtn()}
                     {closeBtn()}
@@ -185,11 +184,11 @@ const ItemSlot=(props:ComponentProps<any>)=>{
             </div>
         )  
     },[isCurrent,isFloat,isMaximize,itemSlots,result])
-    const Content=isFloat=="Float"?(isMaximize=="Max"?maxmizeSlot():minimizeSlot()):(maxmizeSlot())
+    const Content=allowFloat==="yes"?isFloat=="Float"?(isMaximize=="Max"?maxmizeSlot():minimizeSlot()):(maxmizeSlot()):maxmizeSlot();
     return(
-       <>
+       <div className="ItemSlot">
        {Content}
-       </>
+       </div>
     )
 }
 export default  memo(ItemSlot);

@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
 import Icon from "../../atoms/icon"
 import Span from "../../atoms/span"
+import StatusBar from "../bars/statusBar"
 export default function ItemDetaiView({target}:ComponentProps<any>){
     
     const src=target.src;
@@ -9,8 +10,10 @@ export default function ItemDetaiView({target}:ComponentProps<any>){
     const part=target.part;
     const rarity=target.rarity;
     const infoStrings=info.split("\n");
-    return(
-        <div className="itemDetailView">
+    return(<div className="itemDetailView">
+        <StatusBar current={true} title="아이템 상세보기"></StatusBar>
+        <div >
+           
             {src!="없음"&&<Icon src={src} name={name}></Icon>}
             <Span rarity={rarity}>{name}</Span>
             <h5>슬롯:{part}</h5>
@@ -21,6 +24,7 @@ export default function ItemDetaiView({target}:ComponentProps<any>){
                 </p>
             ))}
             </div>
+        </div>
         </div>
     )
 }

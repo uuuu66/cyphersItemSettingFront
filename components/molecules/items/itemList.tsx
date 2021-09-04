@@ -29,9 +29,9 @@ export default function ItemList(props:ComponentProps<any>){
                                                 }
                                             }
                                             onListEvent=
-                                            {function(value,src,info,rarity,slot)
+                                            {function(value,src,info,rarity,slot,code)
                                                 {
-                                                return props.onListEvent(value,src,info,rarity,slot);
+                                                return props.onListEvent(value,src,info,rarity,slot,code);
                                                 }
                                             }>
                                                 
