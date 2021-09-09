@@ -6,7 +6,7 @@ export default async function getSlotCode(req:NextApiRequest,res:NextApiResponse
     const parts=Object.keys(cSlotParts);
     const char=req.body.char;
     const code=req.body.code;
-    console.log(req.body);
+    
     if(!char)
         return res.json({data:"charErr"});
     if(!code)

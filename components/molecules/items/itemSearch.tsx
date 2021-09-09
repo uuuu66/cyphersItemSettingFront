@@ -1,90 +1,94 @@
 import { ComponentProps,MutableRefObject,useReducer,useRef,useState} from "react"
 import { searchItems } from "../../../lib/data";
 import { debouncing } from "../../../lib/util";
-
+import Button from "../../atoms/button"
 import SearchResult from "./searchResult";
 interface IsearchReducerAction{
     code:string;
     idx:number;
-    data:string;
+    search:string;
+    data:any;
 }
 interface IsearchResult{
     word:string;
     data:any
 }
-export default function ItemSearch({char,onAnnounce,onWatchDetail,onEquip}:ComponentProps<any>){
- 
+export default function ItemSearch(props:ComponentProps<any>){
+
     const inputRef:MutableRefObject<any>=useRef();
     const [search,setSearch]=useReducer(searchReducer,[]);
-    function searchReducer(state:Array<any>,action:IsearchReducerAction){
-        const newState=[...state];
+    function searchReducer(state:Array<IsearchResult>,action:IsearchReducerAction){
+        const newState:Array<IsearchResult>=[...state];
         if(action.code==="CREATE"){
-            newState.splice(action.idx,1);
-            searchItems(action.data,char).then(
-                data=>{
-                    console.log(typeof(data));
-                const newResult:IsearchResult={
-                    word:action.data,
-                    data:data,
-                }
-                newState.push(newResult);
-                }
-            )
-            
-        }
+            newState.pop();
+            const newResult:IsearchResult={
+                word:action.search,
+                data:action.data,
+            }
+            newState.push(newResult);
+        }   
         if(action.code==="DELETE"){
             newState.splice(action.idx,1);
         }
         return newState;
     }
-    function onCreate(data:string){
+    async function createSearch(data:string){
+        const result=await searchItems(data,props.char);
+        return result;
+    }
+     function onCreate(search:string,data:any){
         const action:IsearchReducerAction={
             code:"CREATE",
             idx:null,
+            search:search,
             data:data,
-        }
-        console.log(search.length);
-        if(search.length<3)
-            return setSearch(action);
-        else
-            return onAnnounce(`[${data}]검색 결과 생성 실패.3개제한.`,"경고");
+        }     
+       return setSearch(action);         
     }
     function onDelete(idx:number){
         const action:IsearchReducerAction={
             code:"DELETE",
+            search:null,
             idx:idx,
             data:null,
         }
         return setSearch(action);
     }
+
    
     return(
         <div className="searchResult">
             <h1>아이템 검색</h1>
-            <div id="inputDiv">
-            <input ref={inputRef} id="charSearch" 
-            onClick={async function(){
-                if(inputRef.current.value!=""){
-                   return onCreate(inputRef.current.value)
-                }
-                }}
+            <div className="inputDiv">
+            <input ref={inputRef} className="charSearch" placeholder="ex)치명,혼불,파이크 이펙션...."
             ></input>
+            <Button onClick={async function(){
+                if(inputRef.current.value!=""){
+                    props.onReady(true);
+                    const res=await createSearch(inputRef.current.value)
+                    props.onReady(false);
+                   return  onCreate(inputRef.current.value,res);
+                }
+                }}>검색</Button>
             </div>      
             {search.map(
-            (val,idx)=>
-                <SearchResult
+              (val,idx)=>
+                {return <SearchResult
+                        key={val.word+idx}
                         onDelete={()=>onDelete(idx)}
                         search={val.word}
                         data={val.data}
-                        onWatchDetail=
-                        {
-                            function(name,src,info,rarity,slot){
-                                onAnnounce(`<${name}> 상세보기.`,"언커먼")
-                                onWatchDetail(name,src,info,rarity,slot)
+                        onWatchDetail={function(name,src,info,rarity,slot)
+                            {
+                                return props.onWatchDetail(name,src,info,rarity,slot);
                             }
                         }
-                        onListEvent={onEquip}>
-                </SearchResult> 
+                        onListEvent={function(value,src,info,rarity,slot,code)
+                            {
+                                return props.onListEvent(value,src,info,rarity,slot,code);
+                            }
+                        }>
+                </SearchResult>} 
            )}    
         </div> 
     )

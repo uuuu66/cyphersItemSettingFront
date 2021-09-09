@@ -3,7 +3,7 @@ import BtnList from '../btnList/btnList'
 import Span from '../../atoms/span'
 
 export default function ItemList(props:ComponentProps<any>){
-        console.log("called",props.data);
+       
 
         const itemsObject=Object.values(props.data);
         const keys=Object.keys(props.data);

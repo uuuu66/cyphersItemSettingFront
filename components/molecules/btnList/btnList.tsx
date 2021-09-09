@@ -23,7 +23,7 @@ export default function BtnList(props:ComponentProps<any>){
                             key={value.name?value.name:value.itemName} 
                             rarity={value.rarityName?value.rarityName:"유니크"}
                             info={value.explainDetail?value.explainDetail:value.name}
-                            slot={props.slot}
+                            slot={value.slotName}
                             onWatchDetail={
                                 function(name,src,info,rarity,slot){
                                     return props.onWatchDetail(name,src,info,rarity,slot);

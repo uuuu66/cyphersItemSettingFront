@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import { getCharList,getItemList } from "../lib/data"
 import {debouncing} from "../lib/util"
 import CharacterList from '../components/organisms/characterList'
-import React, {useState,  useCallback, useReducer, useEffect,useRef, MutableRefObject} from 'react';
+import React, {useState,  useCallback, useReducer, useEffect,useRef} from 'react';
 import ItemSetting from "../components/organisms/itemSetting";
 import Span from '../components/atoms/span'
 import Loading from '../components/molecules/popup/loading'
@@ -163,7 +163,7 @@ export default function Make({CharList}){
          }
          onReady={
            function(boolean){
-             const result=!boolean||forceLoading(boolean,80); 
+             const result=setLoading(boolean);
              return result;
            }
        }

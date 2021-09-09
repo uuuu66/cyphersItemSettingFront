@@ -1,5 +1,5 @@
 
-import { ComponentProps,useCallback,useEffect,useReducer,useState,useRef, MutableRefObject,forwardRef, ForwardedRef } from "react";
+import { ComponentProps,useCallback,useEffect,useReducer,useState,useRef, MutableRefObject,memo } from "react";
 import ItemList from "../molecules/items/itemList";
 import ItemSlot from "../molecules/items/itemSlot";
 import ItemResult,{getSlotsAbillities,Iabillities} from"../molecules/items/itemResult";
@@ -419,7 +419,7 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
 
     return(
         <div className="itemSetting" >
-            s
+        
             <div className="maintitle" >
             {Title}
             {<input className={`ReNameInput${reNameInput}`}  ref={inputRef} onBlur={function(e){setRenameInput(!reNameInput);props.onRename(e.target.value)}} placeholder={`제목 수정`}></input>}
@@ -432,13 +432,21 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
             {itemSlots()}
             {props.active&&floatSlots()}
             <ItemDetaiView target={detailTarget} ></ItemDetaiView>
-            <ItemSearch char={props.char}
+            <ItemSearch 
+            char={props.char}
+            onReady={props.onReady}
             onAnnounce={props.onAnnounce}
-            onWatchDetail={onWatchDetail}
-            onEquip={onEquip} 
+            onWatchDetail={ function(name,src,info,rarity,slot){
+                props.onAnnounce(`<${name}> 상세보기.`,"언커먼")
+                onWatchDetail(name,src,info,rarity,slot)
+            }}
+            onListEvent={onEquip}
             ></ItemSearch>
             {itemLists()}
         </div>
     )
 }
-export default ItemSetting
+function areEqual(prevProps:ComponentProps<any>, nextProps:ComponentProps<any>) {
+    return prevProps.active===nextProps.active?true:false;
+  }
+export default memo(ItemSetting,areEqual)
