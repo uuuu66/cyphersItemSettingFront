@@ -51,7 +51,8 @@ export default function Make({CharList}){
     const [Announces,setAnnounce]=useState([]);  
     const scrollRef=useRef<HTMLDivElement>();
     function scrollEvent() {
-      setAnnounceEmpty();
+      if(scrollRef.current===null)
+      return;
       for(let i=0;i<scrollRef.current.children.length;i++){
         let currentTop=scrollRef.current.children.item(i).getBoundingClientRect().top+window.pageYOffset;
         let nextTop=currentTop+scrollRef.current.children.item(i).getBoundingClientRect().height;

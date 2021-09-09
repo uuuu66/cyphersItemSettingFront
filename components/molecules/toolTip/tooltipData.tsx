@@ -22,7 +22,7 @@ export default function ItemDetail(props:ComponentProps<any>){
              return;                  
          })}
          <br></br>
-         <Span rarity="언커먼"><Span rarity="유니크">터치</Span><br></br> 아이템 착용/해제하기</Span>
+         <Span rarity="언커먼"><Span rarity="유니크">1초 정도 터치</Span><br></br> 아이템 착용/해제하기</Span>
          <br></br>
          <Span rarity="언커먼"><Span rarity="유니크">길게 터치</Span><br></br> 아이템 상세보기</Span>
          </div>)

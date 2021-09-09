@@ -115,7 +115,6 @@ export function getSlotsAbillities(slot:Islot)
            processSetSideEffect([value],name)
            return result;
         }
-      
         const abilName=value.split(":")[0].split(" ")[0]
         let abilStrs:string[]=value.split(":")
         const abilNum=processPercentToNum(abilStrs[1]);

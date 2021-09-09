@@ -19,7 +19,7 @@ export default function ItemList(props:ComponentProps<any>){
                                 {keysOfKeys.map((va,ia)=>{
                                     
                                     return(
-                                        <li key={va}>{va}<details><summary>===================</summary>
+                                        <li key={va}>{va}
                                             <BtnList 
                                             data={items[ia]} 
                                             slot={va} 
@@ -36,7 +36,7 @@ export default function ItemList(props:ComponentProps<any>){
                                                 return props.onListEvent(value,src,info,rarity,slot,code);
                                                 }
                                             }>               
-                                            </BtnList></details>
+                                            </BtnList>
                                         </li>
                                     )
                             })}
@@ -48,7 +48,9 @@ export default function ItemList(props:ComponentProps<any>){
     <div className="itemList">  
         
         <div className="subtitle"><h2>아이템 목록</h2>
-            <Span rarity="언커먼"><Span rarity="레어">터치</Span> : 아이템 착용/해제하기</Span>
+            <Span rarity="언커먼"><Span rarity="레어">짧게 터치</Span> : 아이템 간단 보기 </Span>
+            <br></br>
+            <Span rarity="언커먼"><Span rarity="레어">1초 정도 터치</Span> : 아이템 착용/해제하기</Span>
             <br></br>
             <Span rarity="언커먼"><Span rarity="레어">길게 터치</Span> : 아이템 상세보기</Span>
         </div>

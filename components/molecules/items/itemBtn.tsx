@@ -23,12 +23,12 @@ export default function ItemBtn(props:ComponentProps<any>){
     const originalSlot=props.slot;
     const[slot,setSlot]=useState(props.slot);
     const[On,setOn]=useState("OFF");
-    
+    const[toolTip,setToolTip]=useState(false);
     let mouseFlag=false;
     let mouseInterval=null;
     let startTime=0;
     let currentTime=0;
-    const shortTapTime=500;
+    const shortTapTime=300;
     const longTapTime= 3000;
     
     const toolBarButtons=makeToolBar();
@@ -92,7 +92,7 @@ export default function ItemBtn(props:ComponentProps<any>){
         clearInterval(mouseInterval);
         const howLongTime=currentTime-startTime;
         mouseFlag=false;
-        return  howLongTime<shortTapTime?originalSlot=="장신구ALL"?toolBarOn():makeEquipUnEquip():null;   
+        return  howLongTime>shortTapTime&&howLongTime<shortTapTime+500?originalSlot=="장신구ALL"?toolBarOn():makeEquipUnEquip():setToolTip(!toolTip);   
     }
     function longTap(){
         clearInterval(mouseInterval);
@@ -117,7 +117,7 @@ export default function ItemBtn(props:ComponentProps<any>){
 
   
     return(
-        <ToolTip info={info} type={type} name={name} rarity={rarity} >    
+        <ToolTip On={toolTip} info={info} type={type} name={name} rarity={rarity} >    
             <div className={type} 
             onTouchStart={(e)=>{e.stopPropagation();mouseCapture()}}
             onTouchEnd={(e)=>{e.preventDefault();mouseUp()}}

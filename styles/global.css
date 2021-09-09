@@ -325,7 +325,7 @@ h2 {
 .toolTip {
   display: inline-block;
 }
-.toolTip .characterI {
+.toolTipfalse .characterI {
   background-color: black;
   position: absolute;
   transition: transform 1s;
@@ -333,14 +333,14 @@ h2 {
   font-size: 10px;
   z-index: 300;
 }
-.toolTip .itemI {
+.toolTipfalse .itemI {
   background-color: black;
   position: absolute;
   display: none;
   font-size: 10px;
   z-index: 300;
 }
-.toolTip .itemiconI {
+.toolTipfalse .itemiconI {
   background-color: black;
 
   position: absolute;
@@ -368,7 +368,10 @@ h2 {
   width: fit-content;
   display: flex;
 } */
-.toolTip:active .characterI {
+.toolTiptrue .characterI {
+  z-index: 300;
+  background-color: black;
+  position: absolute;
   color: white;
   display: flex;
   left: inherit;
@@ -377,23 +380,28 @@ h2 {
   text-align: center;
 }
 
-.toolTip:hover .itemI {
+.toolTiptrue .itemI {
+  z-index: 300;
+  background-color: black;
+  position: absolute;
   color: white;
   width: fit-content;
+  max-width: 200px;
   display: flex;
   flex-direction: column;
 }
-.toolTip:active .itemI {
+
+.toolTiptrue .itemiconI {
+  z-index: 300;
+  background-color: black;
+  position: absolute;
   color: white;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-}
-.toolTip:active .itemiconI {
-  color: white;
+  max-width: 180px;
+  font-size: 10px;
   width: 100px;
   display: flex;
 }
+
 button.normal {
   color: black;
   font-size: 25px;
@@ -585,6 +593,7 @@ td {
   font-size: 0px;
   color: black;
   align-items: right;
+  height: 100%;
 }
 
 .statusBarSlot {
@@ -609,6 +618,7 @@ td {
   font-size: 0px;
   text-align: center;
   align-items: right;
+  height: 100%;
 }
 .statusBarCurrentSlot {
   width: 100%;
@@ -640,17 +650,16 @@ td {
 .divButton {
   color: black;
 
-  font-size: 15px;
+  font-size: 25px;
   background-color: gray;
   border-left: 1px black solid;
   height: 100%;
   width: 1em;
   flex: 1;
+  line-height: 30px;
   display: inline-block;
 }
-.divButton:hover {
-  background-color: white;
-}
+
 .divButton:active {
   background-color: blue;
   color: yellow;
@@ -801,7 +810,7 @@ div.imgButton {
   display: inline-block;
   transition: transform 1s;
 }
-div.imgButton:hover {
+div.imgButton:active {
   transform: rotate(360deg);
 }
 div.toolBarBtn {

@@ -10,7 +10,7 @@ module.exports = {
     return[
       {
         source: '/:path',
-        destination: 'http://127.0.0.1:3000', 
+        destination: 'http://39.115.162.208/:3000', 
       },
     ]
   },

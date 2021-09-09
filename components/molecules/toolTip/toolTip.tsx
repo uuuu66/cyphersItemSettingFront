@@ -1,8 +1,9 @@
 
-import {  ComponentProps } from "react";
+import {  ComponentProps ,useState} from "react";
 import TooltipData from "./tooltipData";
 import ToolBar from "../bars/toolBar";
 export default function Tooltip(props:ComponentProps<any>){
+  
     function toolBar(props){
         if(!props.toolBar)
         return
@@ -31,7 +32,7 @@ export default function Tooltip(props:ComponentProps<any>){
             )
     }
     return(
-        <div className="toolTip" >
+        <div className={`toolTip${props.On}`} >
            {props.children}
             
             {toolTipInfo(props)}

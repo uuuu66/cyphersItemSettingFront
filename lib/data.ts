@@ -91,6 +91,7 @@ function processSearchCharacter(searchWord:string,compareTarget:string){
    return false;
 }
 async function processSearchItem(searchWord:string,char:string){
+   searchWord=searchWord.trim();
    const res=await getItemList(char);
    const keys=Object.keys(res);
    const result={};

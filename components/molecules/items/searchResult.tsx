@@ -15,11 +15,11 @@ export default  function SearchResult(props:ComponentProps<any>){
     
     function howManyResult(){
         const keys=Object.keys(props.data);
-        return keys.map(key=>(<p key={key}>
+        return keys.map(key=>(<div key={key}>
         {key!=="공통"?<h1>{key} 전용 아이템의 결과 </h1>:<h1>{key} 아이템의 결과 </h1>}
             <h3>설명 일치:{props.data[key]["설명 일치"].length}</h3>
             <h3>이름 일치:{props.data[key]["이름 일치"].length}</h3>
-        </p>))
+        </div>))
     }
     return(
     <div className="itemSearchResult">

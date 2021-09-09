@@ -57,7 +57,6 @@ const ItemSlot=(props:ComponentProps<any>)=>{
                 return props.onListEvent(slot,idx);
             }}>     
             </ItemBtn>
-
         )
     }  
     const minimizeBtn=useCallback(()=>{
@@ -84,7 +83,7 @@ const ItemSlot=(props:ComponentProps<any>)=>{
             onBtnClick=
             {function(){
                     onFloat(idx,props.isFloat);
-            }}>x</DivBtn>
+            }}>X</DivBtn>
         )
     },[isFloat])
     const floatBtn=useCallback(()=>{
@@ -93,7 +92,7 @@ const ItemSlot=(props:ComponentProps<any>)=>{
             onBtnClick=
             {function(){
                     onFloat(idx,props.isFloat);              
-            }}>+</DivBtn>
+            }}>＋</DivBtn>
         )
     },[isFloat])
     const currentBtn=useCallback(()=>{      
