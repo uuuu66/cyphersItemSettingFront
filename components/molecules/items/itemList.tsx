@@ -1,12 +1,14 @@
-import { ComponentProps,memo,useCallback} from "react";
+import { ComponentProps,memo,useState} from "react";
 import BtnList from '../btnList/btnList'
 import Span from '../../atoms/span'
 
 export default function ItemList(props:ComponentProps<any>){
-        
+        console.log("called",props.data);
+
         const itemsObject=Object.values(props.data);
-        let keys=Object.keys(props.data);
-        keys[1]="공통";
+        const keys=Object.keys(props.data);
+        
+
         const  Content= keys.map((v,i)=>
             {
                 const keysOfKeys=Object.keys(itemsObject[i]);
@@ -33,8 +35,7 @@ export default function ItemList(props:ComponentProps<any>){
                                                 {
                                                 return props.onListEvent(value,src,info,rarity,slot,code);
                                                 }
-                                            }>
-                                                
+                                            }>               
                                             </BtnList></details>
                                         </li>
                                     )

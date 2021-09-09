@@ -6,8 +6,9 @@ import ItemResult,{getSlotsAbillities,Iabillities} from"../molecules/items/itemR
 import ItemDetaiView from "../molecules/items/itemDetailView";
 import ItemSlotButtons from "../molecules/items/itemSlotButtons";
 import ItemMenuButtons from "../molecules/items/itemMenuButtons";
+import ItemSearch from "../molecules/items/itemSearch";
 import StatusBar from "../molecules/bars/statusBar"
-import ToolBar from "../molecules/bars/toolBar"
+import { getSlotCode } from "../../lib/data"; 
 import DivButton from "../atoms/divButton";
 import ImgButton from "../atoms/imgButton";
 import ToolBarButton from "../molecules/toolBarButton/toolBarButton";
@@ -56,8 +57,8 @@ export interface Islot{
     isFloat:boolean;
     result:Iabillities[];
 }
-const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDivElement>)=>{
-   
+const  ItemSetting=(props:ComponentProps<any>)=>{
+    const title=props.name!==null?props.name:`${props.char}#${props.index}`;
     const [detailTarget,setDTarget]=useState(new CslotInfo("없음","없음","없음","없음","없음","없음"));
     const defaultSlotParts=new CslotParts();
  
@@ -122,7 +123,9 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
         if(action[0]==="MAXIMIZE"){
             newSlots=setMaximize(newSlots,action[1],action[2]);
         }
-        
+        if(action[0]==="LOAD"){
+            newSlots=loadSlot(newSlots,action[1]);
+        }
         newSlots=setResult(newSlots);
         return newSlots;
     }    
@@ -217,7 +220,7 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
             return null;
         const items:CslotParts=slot.items;
         const parts=Object.keys(items);
-        let itemCode="\n\n아이템 코드:::";
+        let itemCode="\n\n:::아이템 코드:::\n";
         parts.map((part,index)=>{
             const item:CslotInfo=items[part];
             const itemName=item===null?"없음":item.name;
@@ -241,6 +244,21 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
             document.body.removeChild(link);
             window.URL.revokeObjectURL(link.href);
         }, 100);
+    }
+    function loadSlot(state:Islot[],slot:CslotParts){
+        const lastIdx=getLastIndex(state)
+        const newIslot:Islot={
+            idx:lastIdx+1,
+            current:false,
+            title:props.char,
+            items:slot,
+            isMaxmize:false,
+            isFloat:false,
+            result:null,
+        } 
+        state.push(newIslot);
+        return state;
+     
     }
     function createSlot(state:Islot[]){
         const lastIdx=getLastIndex(state)
@@ -289,14 +307,20 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
     function onDelete(idx:number){
         return setSlots(["DELETE",idx]);
     }
-    function onSave(title:string,idx:number){
+    function onSave(idx:number){
         return saveSet(title,idx);
     }
-    function onLoad(code:number){
-        console.log(code);
-        
-        return setSlots(["LOAD",code]);
+    function onLoad(code:string){
+        getSlotCode(code,props.char).then(value=>{
+            if(value.code==="err"){
+                return props.onAnnounce(value.data)
+            }    
+            return setSlots(["LOAD",value.data]);
+           }).catch(err=>{
+            console.log(err);
+           })  
     }
+    
     function onReset(idx:number){
         return setSlots(["RESET",idx])
     }
@@ -307,7 +331,7 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
     }
     
     const itemLists=useCallback(()=>{  
-    return (<ItemList key={props.name+props.index} data={props.data} checkCurrent={checkCurrent(slots)}
+    return (<ItemList key={props.name+props.index} data={props.data} 
                 onWatchDetail={
                     function(name,src,info,rarity,slot){
                         props.onAnnounce(`<${name}> 상세보기.`,"언커먼")
@@ -325,7 +349,7 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
                         onCreate={onCreate}
                         onDelete={()=>onDelete(i)}
                         onReset={()=>onReset(i)}
-                        onSave={()=>onSave(value.title,i)}
+                        onSave={()=>onSave(i)}
                         onLoad={onLoad}>
                         </ItemSlotButtons>
                     </StatusBar>
@@ -362,12 +386,10 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
             )
         )
         ,[slots])
-      
+                        
         const inputRef:MutableRefObject<any>=useRef();
-        const Title=props.name!==null?
-            <h1 onClick={function(){setRenameInput(!reNameInput);}}>{props.name}</h1>
-            :
-            <h1 onClick={function(){setRenameInput(!reNameInput);}}>{`${props.char}#${props.index}`}</h1>
+        const Title=<h1 onClick={function(){setRenameInput(!reNameInput);}}>{title}</h1>;
+            
         const floatSlots=useCallback(()=>
         (
                  <div className="floatSlots" >
@@ -396,12 +418,8 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
         ),[slots]);
 
     return(
-        <div className="itemSetting"  ref={ref}>
-            <StatusBar current="true" title={`${props.char} 아이템 세팅 창`} >
-                <ToolBarButton title={toolBar.title} buttons={toolBar.buttons}>
-                <ImgButton src="/deleteBtn.png" alt="삭제"></ImgButton>
-                </ToolBarButton>
-            </StatusBar>
+        <div className="itemSetting" >
+            s
             <div className="maintitle" >
             {Title}
             {<input className={`ReNameInput${reNameInput}`}  ref={inputRef} onBlur={function(e){setRenameInput(!reNameInput);props.onRename(e.target.value)}} placeholder={`제목 수정`}></input>}
@@ -414,8 +432,13 @@ const  ItemSetting=forwardRef((props:ComponentProps<any>,ref:ForwardedRef<HTMLDi
             {itemSlots()}
             {props.active&&floatSlots()}
             <ItemDetaiView target={detailTarget} ></ItemDetaiView>
+            <ItemSearch char={props.char}
+            onAnnounce={props.onAnnounce}
+            onWatchDetail={onWatchDetail}
+            onEquip={onEquip} 
+            ></ItemSearch>
             {itemLists()}
         </div>
     )
-})
+}
 export default ItemSetting

@@ -123,11 +123,18 @@ export function getSlotsAbillities(slot:Islot)
         processClassifySideEffectType(index,infoStrings)?
         processSetSideEffect(abilStrs,name)
         :
-        result.hasOwnProperty(abilName)?result[abilName]+=abilNum:processSetSideEffect(abilStrs,name); 
+        processSetEffect(abilName,abilNum,name,abilStrs)
         return result;
     }
     function processSetSideEffect(abilStrs:string[],name:string){
         result.부가효과[name]==null?result.부가효과[name]=[abilStrs]:result.부가효과[name].push(abilStrs);
+    }
+    function processSetEffect(abilName:string,abilNum:number,name:string,abilStrs:string[]){
+        if(abilName!=="방어력")
+        result.hasOwnProperty(abilName)?result[abilName]+=abilNum:processSetSideEffect(abilStrs,name); 
+        else{
+         result[abilName]=(((1-result[abilName]/100)*abilNum/100)+result[abilName]/100)*100;
+        }
     }
     function processClassifySideEffectType(index:number,infoStrings:string[]){
         let flag=false;

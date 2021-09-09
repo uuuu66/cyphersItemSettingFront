@@ -1,6 +1,6 @@
 import { ComponentProps,useCallback,useState } from "react";
 import ItemBtn from '../items/itemBtn'
-import {searchDatas} from '../../../lib/data';
+import {searchChars} from '../../../lib/data';
 import List from '../list/list';
 export default function BtnList(props:ComponentProps<any>){
     
@@ -11,7 +11,7 @@ export default function BtnList(props:ComponentProps<any>){
                     value=>{ 
                                 if(search!=null){
                                     
-                                        if(!searchDatas(search,value.name,listType)){   
+                                        if(!searchChars(search,value.name)){   
                                             return ;
                                         }  
                                 }

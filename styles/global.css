@@ -310,6 +310,7 @@ div.itemDetailView div.icon div {
 #inputDiv {
   width: 100%;
   text-align: center;
+  margin-bottom: 50px;
 }
 
 h1 {
@@ -376,6 +377,12 @@ h2 {
   text-align: center;
 }
 
+.toolTip:hover .itemI {
+  color: white;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
 .toolTip:active .itemI {
   color: white;
   width: fit-content;
@@ -852,4 +859,16 @@ details.slot[open] {
 }
 input.codeInput {
   size: 10;
+}
+.searchResult {
+  background-color: black;
+}
+.searchResult h1 {
+  color: white;
+}
+.searchResult .itemList {
+  background-color: skyblue;
+}
+.itemSearchResult {
+  margin-bottom: 30px;
 }
