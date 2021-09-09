@@ -15,7 +15,6 @@ export default async function hander(req: NextApiRequest, res: NextApiResponse) 
         console.log("error",req);
         return  res.json({code:"error",data:"no signal"});
     }
-   
 }
 
 // export const config = {

@@ -419,7 +419,11 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
 
     return(
         <div className="itemSetting" >
-        
+              <StatusBar current="true" title={title} >
+                <ToolBarButton title={toolBar.title} buttons={toolBar.buttons}>
+                <ImgButton src="/deleteBtn.png" alt="삭제"></ImgButton>
+                </ToolBarButton>
+            </StatusBar>
             <div className="maintitle" >
             {Title}
             {<input className={`ReNameInput${reNameInput}`}  ref={inputRef} onBlur={function(e){setRenameInput(!reNameInput);props.onRename(e.target.value)}} placeholder={`제목 수정`}></input>}
@@ -447,6 +451,11 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
     )
 }
 function areEqual(prevProps:ComponentProps<any>, nextProps:ComponentProps<any>) {
-    return prevProps.active===nextProps.active?true:false;
+    let flag=false;
+    flag=prevProps.active===nextProps.active?true:false;
+    if(flag===false)
+        return flag;
+    flag=prevProps.name===nextProps.name?true:false;
+    return flag; 
   }
 export default memo(ItemSetting,areEqual)

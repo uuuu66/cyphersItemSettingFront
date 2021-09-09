@@ -1,7 +1,6 @@
 import Span from '../atoms/span'
 import Image from 'next/image'
 export default function Aside(){
-   
     return(
         <aside>
             <details>
@@ -9,32 +8,26 @@ export default function Aside(){
                     <ul>
                         <li>
                         이름:MINKI LEE
-                        
                             <details>
                                 <summary>
                                     하고싶은 말
                                 </summary>
-                                <p>"사퍼야 아프지마."</p>
+                                <p>"사퍼야 아프지마"</p>
                             </details>
-                        
-                        </li>
-                        
+                        </li>      
                         <li>
-                        버그 제보 :
+                        <h1>버그 제보 :</h1>
                             <ul>
                                 <li>메일</li> 
-                                <a >leeminki0428@gmail.com</a>
-                                <li>개인 블로그</li> 
-                                <a href="https://mlog.cf" rel="noreferrer" target='_blank'>https://mlog.cf</a>
+                                <a>leeminki0428@gmail.com</a>
                             </ul>
                         </li>
                         <Span rarity="hidden">난 숨겨져 잇지롱 헤헤</Span>
                     </ul>
-                    <div id="s3ImgDiv"><Image layout="fill" src="/s3.gif" id="s3" alt=" "/> </div>  
+                    <div id="s3ImgDiv"><Image layout="fill" loading="eager" src="/s3.gif"  alt="네오플 div"/></div>  
                 </div>
                 <summary>개발자 정보</summary>
             </details>
         </aside>
-        
     )
 }

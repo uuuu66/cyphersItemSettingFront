@@ -165,7 +165,7 @@ const ItemSlot=(props:ComponentProps<any>)=>{
                 <div className={`summaryResult${isFloat}`}>
                     {result&&abillities.map((abil,i)=>{
                         if(abil!=="부가효과")
-                         return i==4?<Span  key={i+abil}rarity="유니크">{`${abil}:${result[0][abil]} `}<br></br></Span>:<Span  key={i +abil}rarity="유니크">{`${abil}:${result[0][abil]}   `}</Span>
+                         return i==4?<Span  key={i+abil}rarity="유니크">{`${abil}:${result[0][abil]} `}<br></br></Span>:<Span  key={i +abil}rarity="유니크">{`${abil}:${result[0][abil].toFixed(2)}   `}</Span>
                         }
                         
                     )}
