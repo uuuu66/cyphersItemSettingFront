@@ -9,6 +9,7 @@ import Loading from '../components/molecules/popup/loading'
 import Announce from '../components/molecules/popup/announce'
 import Wrap from "../components/atoms/wrap";
 import ImgButton from "../components/atoms/imgButton";
+
 export interface IactiveSet{
   key:number;
   name:string;
@@ -68,7 +69,7 @@ export default function Make({CharList}){
     useEffect(()=>{
     window.addEventListener("scroll",debouncedScrollEvent);
     return()=>{ window.removeEventListener("scroll",debouncedScrollEvent)
-    console.log("리턴됨")
+      
     }},[])
     function forceLoading(boolean:boolean,time:number){
       setLoading(boolean);
@@ -91,7 +92,7 @@ export default function Make({CharList}){
       const data=action.data??null;
       let newState:IactiveSet[]=[]
       if(order==="CREATE"){
-        newState= [...state,list];
+        newState= [list,...state];
       }
       if(order==="DELETE"){
         newState=deleteSet(state,key);
@@ -119,6 +120,7 @@ export default function Make({CharList}){
     }
     function onCreate(value){
       setLoading(true);
+      window.scrollTo(0,0);
        getItemList(value).then(
         data=>{
           let newActive:IactiveSet={
