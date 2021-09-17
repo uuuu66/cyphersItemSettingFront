@@ -13,7 +13,7 @@ export interface Iabillities{
     "부가효과":object;
    
 }
-export default function Result({slot}:ComponentProps<any>){
+const Result=({slot}:ComponentProps<any>)=>{
     
     const abillities=getSlotsAbillities(slot)
     const abilNames=Object.keys(abillities[0]); 
@@ -147,3 +147,4 @@ export function getSlotsAbillities(slot:Islot)
         return flag;
     }
 }
+export default Result

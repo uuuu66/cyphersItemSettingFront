@@ -8,6 +8,7 @@ import Span from '../components/atoms/span'
 import Loading from '../components/molecules/popup/loading'
 import Announce from '../components/molecules/popup/announce'
 import Wrap from "../components/atoms/wrap";
+import ImgButton from "../components/atoms/imgButton";
 export interface IactiveSet{
   key:number;
   name:string;
@@ -50,6 +51,7 @@ export default function Make({CharList}){
     const [isLoading,setLoading]=useState(false);
     const [Announces,setAnnounce]=useState([]);  
     const scrollRef=useRef<HTMLDivElement>();
+    const [scroll,setScroll]=useState(0);
     function scrollEvent() {
       if(scrollRef.current===null)
       return;
@@ -58,6 +60,7 @@ export default function Make({CharList}){
         let nextTop=currentTop+scrollRef.current.children.item(i).getBoundingClientRect().height;
         if(scrollY>currentTop&&scrollY<=nextTop){
           onActive(i);
+          setScroll(currentTop)
         }
       }     
     }
@@ -195,8 +198,12 @@ export default function Make({CharList}){
               onCreate={onCreate}
               >
             </CharacterList>
+           
           }
           </div>
+          {<div className="topButton">
+             <ImgButton onBtnClick={function(){window.scrollTo(0,scroll)}} src="/topBtn.png" alt="위로" ></ImgButton>
+           </div>}
       </div>
     )
 }

@@ -1,4 +1,4 @@
-import { ComponentProps,MutableRefObject,useReducer,useRef,useState} from "react"
+import { ComponentProps,memo,MutableRefObject,useReducer,useRef,useState} from "react"
 import { searchItems } from "../../../lib/data";
 import { debouncing } from "../../../lib/util";
 import Button from "../../atoms/button"
@@ -13,7 +13,7 @@ interface IsearchResult{
     word:string;
     data:any
 }
-export default function ItemSearch(props:ComponentProps<any>){
+const  ItemSearch=(props:ComponentProps<any>)=>{
 
     const inputRef:MutableRefObject<any>=useRef();
     const [search,setSearch]=useReducer(searchReducer,[]);
@@ -93,3 +93,8 @@ export default function ItemSearch(props:ComponentProps<any>){
         </div> 
     )
 }
+function areEqual(prevProps:ComponentProps<any>,nextProps:ComponentProps<any>){
+    let flag=true;
+    return true;
+}
+export default memo(ItemSearch,areEqual)

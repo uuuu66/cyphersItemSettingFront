@@ -1,4 +1,4 @@
-import { ComponentProps ,useEffect,useState,} from "react";
+import { ComponentProps ,memo,useEffect,useState,} from "react";
 
 import Name from '../../atoms/name';
 import Icon from '../../atoms/icon';
@@ -10,7 +10,7 @@ export interface ItoolBar{
     title:string;
     buttons:any[];
 }
-export default function ItemBtn(props:ComponentProps<any>){
+const ItemBtn=(props:ComponentProps<any>)=>{
     const onBtnEvent=props.onBtnEvent??null;
     const onWatchDetail=props.onWatchDetail??null;
     const onUnEquipEvent=props.onUnEquipEvent??null;
@@ -29,14 +29,14 @@ export default function ItemBtn(props:ComponentProps<any>){
     let startTime=0;
     let currentTime=0;
     const shortTapTime=300;
-    const longTapTime= 3000;
+    
     
     const toolBarButtons=makeToolBar();
-    const toolBarTitle=originalSlot=="장신구ALL"?"슬롯 선택":null;
+    const toolBarTitle=originalSlot=="장신구ALL"?"슬롯 선택":"선택";
     const toolBar:ItoolBar=originalSlot=="장신구ALL"?{
         title:toolBarTitle,
         buttons:toolBarButtons,
-    }:null;
+    }:{title:toolBarTitle,buttons:toolBarButtons};
     const [toolBarTimeOut,setToolBarTimeOut]=useState(null);
     
 
@@ -53,16 +53,33 @@ export default function ItemBtn(props:ComponentProps<any>){
     useEffect(function(){return clearTimeout(toolBarTimeOut)})
     function makeToolBar(){
         
-        const Buttons=originalSlot==="장신구ALL"?makeButtons():null;
+        const Buttons=originalSlot==="장신구ALL"?makeAllButtons():makeButtons();
         return Buttons   
     }
-    function makeButtons(){
+    function makeAllButtons(){
         const Buttons=[]
         for(let i=1;i<5;i++){
             Buttons.push(<DivButton key={name+originalSlot+i} onBtnClick={ function(){makeEquipUnEquip(`장신구${i}`),toolBarOn();} }>{`${i}`}</DivButton>);
         }
+        Buttons.push(<DivButton key={name+originalSlot+5} onBtnClick={function(){setToolTip(true)}}>{`보기`}</DivButton>)
+        Buttons.push(<DivButton key={name+originalSlot+6} onBtnClick={function(){setToolTip(false);seeDetail()}}>{`상세`}</DivButton>)
+        Buttons.push(<DivButton key={name+originalSlot+7} onBtnClick={ function(){return null} }>{`취소`}</DivButton>)
         return Buttons;    
-    }   
+    }
+    function makeButtons(){
+        const charButtons=[
+            <DivButton key={name+originalSlot+1} onBtnClick={ function(){onBtnEvent(name),toolBarOn();} }>{`선택`}</DivButton>
+        ,<DivButton key={name+originalSlot+2} onBtnClick={ function(){return null} }>{`취소`}</DivButton>
+    
+        ]
+        const itemButtons=[<DivButton key={name+originalSlot+1} onBtnClick={ function(){makeEquipUnEquip(),toolBarOn();} }>{type==='item'?`장착`:"해제"}</DivButton>
+        ,  <DivButton key={name+originalSlot+3} onBtnClick={function(){setToolTip(true)}}>{`보기`}</DivButton>
+        , <DivButton key={name+originalSlot+6} onBtnClick={function(){setToolTip(false);seeDetail()}}>{`상세`}</DivButton>,
+        <DivButton key={name+originalSlot+2} onBtnClick={function(){return null}}>{`취소`}</DivButton>
+        ]
+       
+        return type==="character"?charButtons:itemButtons;  
+    } 
     function mouseCapture(){
         startTime=Date.now();
         if(mouseFlag!=false)
@@ -74,42 +91,27 @@ export default function ItemBtn(props:ComponentProps<any>){
         if(mouseFlag==false)
          return clearInterval(mouseInterval) ;
         currentTime=Date.now();
-        const howLongTime=currentTime-startTime;
-        howLongTime>longTapTime?seeDetail():function(){return mouseFlag=false;};
     }
     function mouseUp(){
-        if(mouseFlag==false){
-            clearInterval(mouseInterval)
-          return  longTap();
-        }else{        
-           
-          return  shortTap();
-        }    
-        
+          return  shortTap();   
     }
     function shortTap(){
+        if(toolTip)
+        return  setToolTip(false);
         currentTime=Date.now();
         clearInterval(mouseInterval);
         const howLongTime=currentTime-startTime;
         mouseFlag=false;
-        return  howLongTime>shortTapTime&&howLongTime<shortTapTime+500?originalSlot=="장신구ALL"?toolBarOn():makeEquipUnEquip():setToolTip(!toolTip);   
+        return  howLongTime>shortTapTime&&howLongTime<shortTapTime+500?null:toolBarOn();   
     }
-    function longTap(){
-        clearInterval(mouseInterval);
-        if(mouseFlag===false)
-            return null;
-        return seeDetail();
-    }
-    function makeEquipUnEquip(slot=originalSlot){
-        if(slot=="장신구ALL")
-            return;
-        onBtnEvent?onBtnEvent(name,src,info,rarity,slot,code):onUnEquipEvent(slot);
+    function makeEquipUnEquip(slot=originalSlot){   
+        onBtnEvent?onBtnEvent(name,src,info,rarity,slot,code):slot=="장신구ALL"?onUnEquipEvent():onUnEquipEvent(originalSlot);
         mouseFlag=false;
         startTime=0; 
         return clearInterval(mouseInterval);
     }
     function seeDetail(){
-         clearInterval(mouseInterval);  
+        clearInterval(mouseInterval);  
         mouseFlag=false;
         startTime=0; 
         return type!="character"?onWatchDetail(name,src,info,rarity,slot):null;
@@ -137,3 +139,8 @@ export default function ItemBtn(props:ComponentProps<any>){
       
     )
 }
+function areEqual(prevProps:ComponentProps<any>,nextProps:ComponentProps<any>){
+    let flag=true;
+    return flag
+}
+export default memo(ItemBtn,areEqual)

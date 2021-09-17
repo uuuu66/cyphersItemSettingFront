@@ -1,3 +1,4 @@
+
 import { NextApiRequest, NextApiResponse } from 'next'
 import { CslotParts,CslotInfo } from '../../components/organisms/itemSetting';
 import ItemJson from '../../lib/datas/items.json'
@@ -27,14 +28,15 @@ export default async function getSlotCode(req:NextApiRequest,res:NextApiResponse
 function searchItem(char:string,part:string,code:string){
     code=code.trim();
     const charResult=getItems(char,part).filter(item=>{return item.itemId===code});
-    let nullResult=getItems("null",part).filter(item=>{return item.itemId===code});
+    let nullResult=part.includes("장신")?[]:getItems("null",part).filter(item=>{return item.itemId===code});
     nullResult=nullResult.length===0?null:nullResult[0];
-    const item=charResult.length===0?nullResult:charResult[0];
+    let item=charResult.length===0?nullResult:charResult[0];
+    item=item===null?getItems(char,"장신구ALL").filter(val=>{return val.itemId===code})[0]:item;
     const result=new CslotInfo(item.itemName,`https://img-api.neople.co.kr/cy/items/${code}`,item.explainDetail,item.rarityName,item.slotName,code)
     return result;
 }
 function getItems(char:string,part:string){
     const Items=ItemJson[char][part];
-   
+    
     return Items;
 }

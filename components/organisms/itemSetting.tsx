@@ -416,9 +416,9 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
                                 </ItemSlot>})}
                 </div>
         ),[slots]);
-
+    const scrollRef=useRef<HTMLDivElement>();
     return(
-        <div className="itemSetting" >
+        <div className="itemSetting" ref={scrollRef}>
               <StatusBar current="true" title={title} >
                 <ToolBarButton title={toolBar.title} buttons={toolBar.buttons}>
                 <ImgButton src="/deleteBtn.png" alt="삭제"></ImgButton>
@@ -435,7 +435,7 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
             </div>
             {itemSlots()}
             {props.active&&floatSlots()}
-            <ItemDetaiView target={detailTarget} ></ItemDetaiView>
+            {props.active&&<ItemDetaiView target={detailTarget} ></ItemDetaiView>}
             <ItemSearch 
             char={props.char}
             onReady={props.onReady}
@@ -447,6 +447,7 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
             onListEvent={onEquip}
             ></ItemSearch>
             {itemLists()}
+           
         </div>
     )
 }

@@ -2,7 +2,7 @@ import { ComponentProps,memo,useState} from "react";
 import BtnList from '../btnList/btnList'
 import Span from '../../atoms/span'
 
-export default function ItemList(props:ComponentProps<any>){
+const ItemList=(props:ComponentProps<any>)=>{
        
 
         const itemsObject=Object.values(props.data);
@@ -48,11 +48,7 @@ export default function ItemList(props:ComponentProps<any>){
     <div className="itemList">  
         
         <div className="subtitle"><h2>아이템 목록</h2>
-            <Span rarity="언커먼"><Span rarity="레어">짧게 터치</Span> : 아이템 간단 보기 </Span>
-            <br></br>
-            <Span rarity="언커먼"><Span rarity="레어">1초 정도 터치</Span> : 아이템 착용/해제하기</Span>
-            <br></br>
-            <Span rarity="언커먼"><Span rarity="레어">길게 터치</Span> : 아이템 상세보기</Span>
+          
         </div>
         <div>
             {Content}
@@ -60,4 +56,8 @@ export default function ItemList(props:ComponentProps<any>){
     </div>  
     )
 }
-
+function areEqual(prevProps:ComponentProps<any>,nextProps:ComponentProps<any>){
+    const flag=prevProps.data===nextProps.data?true:false;
+    return flag;
+}
+export default memo(ItemList,areEqual)

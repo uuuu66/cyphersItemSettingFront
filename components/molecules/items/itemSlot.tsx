@@ -190,4 +190,10 @@ const ItemSlot=(props:ComponentProps<any>)=>{
        </div>
     )
 }
-export default  memo(ItemSlot);
+function areEqual(prevProps:ComponentProps<any>,nextProps:ComponentProps<any>){
+    let flag=false;
+    if(prevProps==nextProps)
+        flag=true;
+    return flag
+}
+export default  memo(ItemSlot,areEqual);

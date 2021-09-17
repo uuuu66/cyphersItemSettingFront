@@ -1,5 +1,5 @@
 div {
-  max-width: 500px;
+  max-width: 800px;
   word-break: break-all;
 }
 div#footerImg {
@@ -142,9 +142,11 @@ div.charImg {
   border: 2px black solid;
 }
 div#menuBtn {
-  width: 30px;
-  height: 30px;
+  font-size: 30px;
+  width: fit-content;
+  height: 40px;
   position: fixed;
+
   top: 0;
   left: 0;
   background-color: forestgreen;
@@ -152,7 +154,7 @@ div#menuBtn {
 }
 
 div#s3ImgDiv {
-  width: 100%;
+  width: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -169,7 +171,7 @@ summary:hover {
 }
 nav {
   position: fixed;
-  top: 30px;
+  top: 40px;
   left: 0;
   background-color: gray;
   border: 2px black solid;
@@ -178,6 +180,7 @@ nav {
 }
 .menuText {
   cursor: pointer;
+  font-size: 30px;
 }
 .menuText:hover {
   background-color: blue;
@@ -192,6 +195,7 @@ nav {
   display: flex;
   margin: 2px;
   vertical-align: center;
+  touch-action: none;
 }
 #characterSet {
   display: flex;
@@ -257,13 +261,13 @@ div.item div.icon div {
   width: 40px;
 }
 
-div.itemDetailView div.icon {
+div.itemDetailViewtrue div.icon {
   width: 100%;
 }
-div.itemDetailView div.icon div {
+div.itemDetailViewtrue div.icon div {
   display: inline-block;
-  width: 250px;
-  height: 250px;
+  width: 100px;
+  height: 100px;
 }
 .name {
   color: white;
@@ -339,6 +343,7 @@ h2 {
   display: none;
   font-size: 10px;
   z-index: 300;
+  width: 130px;
 }
 .toolTipfalse .itemiconI {
   background-color: black;
@@ -373,7 +378,7 @@ h2 {
   background-color: black;
   position: absolute;
   color: white;
-  display: flex;
+  display: none;
   left: inherit;
   font-size: 10px;
   width: fit-content;
@@ -385,31 +390,47 @@ h2 {
   background-color: black;
   position: absolute;
   color: white;
-  width: fit-content;
-  max-width: 200px;
+  width: 130px;
   display: flex;
   flex-direction: column;
 }
-
+.infoImage {
+  width: 100%;
+  background-color: black;
+  height: max-content;
+  position: unset;
+}
 .toolTiptrue .itemiconI {
   z-index: 300;
   background-color: black;
   position: absolute;
   color: white;
-  max-width: 180px;
+  width: 130px;
   font-size: 10px;
-  width: 100px;
   display: flex;
 }
 
 button.normal {
+  margin-top: 5px;
   color: black;
+
   font-size: 25px;
   height: 40px;
-  width: 100%;
+  width: 80%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: ivory;
+  border: 3px black double;
+  animation: buttonAnim 1s infinite;
+  z-index: 0;
+}
+@keyframes buttonAnim {
+  50% {
+    transfrom: translateX(-30px);
+  }
+  100% {
+    transform: translateX(5px);
+  }
 }
 .loadingtrue {
   z-index: 1000;
@@ -528,7 +549,7 @@ button.normal {
 
   width: fit-content;
   background-color: gray;
-  border: 2px black solid;
+  border: 2px white solid;
 }
 .slot1 {
   width: 100%;
@@ -627,7 +648,7 @@ td {
   justify-content: flex-end;
   text-align: center;
   background-color: blue;
-  border-bottom: solid black 3px;
+  border-bottom: solid white 3px;
 }
 .statusBarCurrentSlot .space {
   font-size: 15px;
@@ -650,13 +671,13 @@ td {
 .divButton {
   color: black;
 
-  font-size: 25px;
+  font-size: 35px;
   background-color: gray;
   border-left: 1px black solid;
   height: 100%;
   width: 1em;
   flex: 1;
-  line-height: 30px;
+  line-height: 40px;
   display: inline-block;
 }
 
@@ -710,9 +731,10 @@ td {
   justify-content: center;
   position: fixed;
   width: 100%;
-  z-index: 400;
+  z-index: 800;
   bottom: 0%;
-  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 30px;
+  background-color: black;
 }
 .announce {
   display: block;
@@ -766,25 +788,38 @@ div.abilNum {
 div.abillity {
   font-size: 13px;
 }
+
 div.sideEffect::after {
   content: "★";
 }
 div.sideEffect {
   margin-bottom: 3em;
 }
-.itemDetailView {
-  background-color: rgb(63, 51, 30);
+.itemDetailViewtrue {
+  background-color: rgb(58, 40, 8);
   color: white;
-
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 600;
+  font-size: 12px;
   padding-bottom: 30px;
   display: inline-block;
-  width: 95%;
-  margin-top: 30px;
+  min-height: 75%;
+  width: 35%;
 
-  margin-bottom: 5px;
   border: 2px solid black;
 }
-
+.itemDetailViewfalse {
+  right: 0;
+  top: 0;
+  width: 6em;
+  height: 1em;
+  position: fixed;
+}
+.itemDetailViewfalse div.view {
+  display: none;
+}
 .summaryResultFloat {
   background-color: black;
   display: inline-block;
@@ -792,7 +827,7 @@ div.sideEffect {
   width: 300px;
 }
 .floatSlots {
-  top: 30px;
+  top: 50px;
   left: 0;
   position: fixed;
   display: inline;
@@ -809,8 +844,10 @@ div.imgButton {
   height: 40px;
   display: inline-block;
   transition: transform 1s;
+  touch-action: none;
 }
 div.imgButton:active {
+  touch-action: none;
   transform: rotate(360deg);
 }
 div.toolBarBtn {
@@ -834,6 +871,10 @@ input.ReNameInputtrue {
 }
 input.ReNameInputfalse {
   display: none;
+}
+img {
+  -webkit-touch-callout: none;
+  touch-action: none;
 }
 details.slot {
   width: 100%;
@@ -871,6 +912,7 @@ input.codeInput {
 }
 .searchResult {
   background-color: black;
+  padding-bottom: 50px;
 }
 .searchResult h1 {
   color: white;
@@ -886,5 +928,12 @@ input.codeInput {
   margin-bottom: 30px;
 }
 .charSearch {
-  width: 80%;
+  width: 60%;
+}
+.topButton {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 700;
+  touch-action: none;
 }

@@ -38,6 +38,9 @@ const getSlotCode=async(code:string,char:string)=>{
       const parts=Object.keys(makedParts);
       parts.map((part,index)=>{
          makedParts[part]=data[index]==="null"?null:data[index];
+         if(makedParts[part]!==null){
+            data[index].part=part;
+         }
       });
       
       return {code:"done",data:makedParts};;
