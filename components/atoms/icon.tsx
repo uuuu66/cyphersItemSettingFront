@@ -5,8 +5,10 @@ export default function Icon(props:ComponentProps<any>){
    
     
     return( <div className="icon" > 
-                <Image src={props.src} className="icon" width="40px" height="40px" priority={true} loading="eager"   alt={props.name}>
+                <link rel="preload" href={props.src} as="image"/>
+                <Image src={props.src} className="icon" width="40px" height="40px" priority={true}    alt={props.name}>
                 </Image>
+                
             </div>
             )
 }
