@@ -789,12 +789,6 @@ div.abillity {
   font-size: 13px;
 }
 
-div.sideEffect::after {
-  content: "★";
-}
-div.sideEffect {
-  margin-bottom: 3em;
-}
 .itemDetailViewtrue {
   background-color: rgb(58, 40, 8);
   color: white;
@@ -936,4 +930,21 @@ input.codeInput {
   bottom: 0;
   z-index: 700;
   touch-action: none;
+}
+.sideEffectWrap span {
+  width: 100%;
+  text-align: center;
+}
+.sideEffect {
+  width: 33%;
+  float: left;
+  min-height: 150px;
+  max-height: inherit;
+}
+.sideEffectSummary {
+  width: 100%;
+  height: fit-content;
+}
+details .sideEffectDetails {
+  width: 100%;
 }
