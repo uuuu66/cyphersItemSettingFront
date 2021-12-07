@@ -22,9 +22,11 @@ nextjs에서 정의한 자체 api로 각 캐릭터의 아이템 목록을 가져
 ![스크린샷(429)](https://user-images.githubusercontent.com/64532732/145071238-63b200c2-a6b4-469d-b9b8-9e04b3123d15.png)
 
 - 간략보기
+ 
 ![스크린샷(428)](https://user-images.githubusercontent.com/64532732/145071266-c0474e7d-9194-4d55-bd01-a65439890ab4.png)
 
 - 검색
+
 ![스크린샷(435)](https://user-images.githubusercontent.com/64532732/145071295-5163d84b-b1c4-4dfd-b2cf-806597c04cb6.png) ![스크린샷(436)](https://user-images.githubusercontent.com/64532732/145071281-a6e3b26f-2806-4404-bda9-0b1d0af09fe7.png)
 
 
