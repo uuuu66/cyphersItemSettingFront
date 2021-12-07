@@ -220,6 +220,10 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
             return null;
         const items:CslotParts=slot.items;
         const parts=Object.keys(items);
+        text=makeText(parts,text,items);
+        return text
+    }
+    function makeText(parts,text,items){
         let itemCode="\n\n:::아이템 코드:::\n";
         parts.map((part,index)=>{
             const item:CslotInfo=items[part];
@@ -231,7 +235,8 @@ const  ItemSetting=(props:ComponentProps<any>)=>{
             text+=infoText;
         });
         text+=itemCode;
-        return text
+       
+        return text;
     }
     function download (title:string,text:string) {
         let blob = new Blob([text], {type:'text/plain'});
